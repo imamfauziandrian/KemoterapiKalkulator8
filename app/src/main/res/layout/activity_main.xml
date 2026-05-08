@@ -1,95 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
-    android:orientation="vertical"
+    android:fillViewport="true"
+    android:background="?attr/colorSurface"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/judul"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:padding="8sp"
-        android:text="Perhitungan Dosis Kemoterapi \nGinekologi Onkologi"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Button
-        android:id="@+id/pacliCarbo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/judul"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikPacliCarbo"
-        android:text="Paclitaxel Carboplatin"
-        android:layout_marginTop="40dp"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:strokeWidth="1dp">
 
-    <Button
-        android:id="@+id/cisplatin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/pacliCarbo"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikCisplatin"
-        android:text="cisplatin" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-    <Button
-        android:id="@+id/gemciCarbo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cisplatin"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikGemciCarbo"
-        android:text="gemcitabin carboplatin" />
+                <TextView
+                    android:id="@+id/judul"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Perhitungan Dosis Kemoterapi"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/doceCarbo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/gemciCarbo"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikDoceCarbo"
-        android:text="docetaxel carboplatin" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Ginekologi Onkologi"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/mTX"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/doceCarbo"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikMTX"
-        android:text="methotrexate" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Pilih regimen yang ingin dihitung"
+                    android:textAlignment="center"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    <Button
-        android:id="@+id/emaco"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mTX"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikEmaco"
-        android:text="EMACO" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/pacliCarbo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="klikPacliCarbo"
+            android:text="Paclitaxel Carboplatin"
+            app:cornerRadius="16dp" />
 
-    <Button
-        android:id="@+id/emaep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/emaco"
-        android:layout_centerHorizontal="true"
-        android:onClick="klikEmaEP"
-        android:text="EMA-EP" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cisplatin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="klikCisplatin"
+            android:text="Cisplatin"
+            app:cornerRadius="16dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:textAlignment="center"
-        android:text="versi Beta 0.8 - \nHari Nugroho - Birama Robby - 2021"
-        android:textSize="10sp" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/gemciCarbo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="klikGemciCarbo"
+            android:text="Gemcitabin Carboplatin"
+            app:cornerRadius="16dp" />
 
-</RelativeLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/doceCarbo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="klikDoceCarbo"
+            android:text="Docetaxel Carboplatin"
+            app:cornerRadius="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mTX"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="klikMTX"
+            android:text="Methotrexate"
+            app:cornerRadius="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/emaco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:onClick="klikEmaco"
+            android:text="EMACO"
+            app:cornerRadius="16dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/emaep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="klikEmaEP"
+            android:text="EMA-EP"
+            app:cornerRadius="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="versi Beta 0.8 - Hari Nugroho - Birama Robby - 2021"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnSurface"
+            android:textSize="11sp" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
