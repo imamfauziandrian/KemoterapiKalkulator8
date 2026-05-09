@@ -56,6 +56,15 @@
 
         </activity>
 
+        <activity
+            android:name="com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity"
+            android:label="Panduan AUC"
+            android:parentActivityName="com.kemoterapi.android.kalkulatorkemoterapi.PaclitaxelCarboplatin">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kemoterapi.android.kalkulatorkemoterapi.PaclitaxelCarboplatin" />
+        </activity>
+
         <activity android:name="com.kemoterapi.android.kalkulatorkemoterapi.MainActivity"
             android:exported="true">
             <intent-filter>
