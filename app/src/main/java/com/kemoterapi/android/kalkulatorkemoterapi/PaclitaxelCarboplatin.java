@@ -31,6 +31,12 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paclitaxel_carboplatin);
 
+        PatientInputCache.bind(
+                findViewById(R.id.usia),
+                findViewById(R.id.beratBadan),
+                findViewById(R.id.tinggiBadan),
+                findViewById(R.id.serumKreatinin));
+
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
@@ -209,6 +215,8 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
      * Fungsi tombol reset
      */
     public void klikReset(View view) {
+
+        PatientInputCache.clear();
 
         EditText usia = findViewById(R.id.usia);
         usia.setText(null);

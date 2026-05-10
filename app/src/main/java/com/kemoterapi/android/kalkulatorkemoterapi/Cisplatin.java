@@ -16,6 +16,12 @@ public class Cisplatin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cisplatin);
 
+        PatientInputCache.bind(
+                findViewById(R.id.usia),
+                findViewById(R.id.beratBadan),
+                findViewById(R.id.tinggiBadan),
+                findViewById(R.id.serumKreatinin));
+
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
     }
@@ -106,6 +112,8 @@ public class Cisplatin extends AppCompatActivity {
      */
 
     public void klikReset (View view) {
+
+        PatientInputCache.clear();
 
         //mengubah input usia ke variable finalUsiaPasien
         EditText usia = (EditText) findViewById(R.id.usia);
