@@ -19,7 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
@@ -49,24 +48,23 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         aucOption.setText("6", false);
 
         AutoCompleteTextView bevacizumabOption = findViewById(R.id.bevacizumabOption);
-        ArrayAdapter<String> bevAdapter = new ArrayAdapter<>(
+        CharSequence[] bevOptions = new CharSequence[]{
+                "Tidak",
+                buildBevacizumabOption("7,5"),
+                buildBevacizumabOption("15")
+        };
+        ArrayAdapter<CharSequence> bevAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                new String[]{"No", "Yes"});
+                bevOptions);
         bevacizumabOption.setAdapter(bevAdapter);
-        bevacizumabOption.setText("No", false);
-
-        ChipGroup bevacizumabDoseGroup = findViewById(R.id.bevacizumabDoseGroup);
         bevacizumabOption.setOnItemClickListener((parent, view, position, id) -> {
-            String selected = (String) parent.getItemAtPosition(position);
-            boolean showDoseGroup = "Yes".equalsIgnoreCase(selected);
-            bevacizumabDoseGroup.setVisibility(showDoseGroup ? View.VISIBLE : View.GONE);
-            if (showDoseGroup) {
-                bevacizumabDoseGroup.check(R.id.chipBev75);
-            }
+                CharSequence selected = (CharSequence) parent.getItemAtPosition(position);
+                bevacizumabOption.setText(selected, false);
+                updateBevacizumabCard(selected.toString().trim(), getCurrentBeratBadan());
         });
-        bevacizumabDoseGroup.check(R.id.chipBev75);
-        bevacizumabDoseGroup.setVisibility(View.GONE);
+        bevacizumabOption.setText("Tidak", false);
+        updateBevacizumabCard("Tidak", 0);
     }
 
     /**
@@ -80,7 +78,6 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         TextInputLayout tilAuc = findViewById(R.id.tilAuc);
         TextInputLayout tilBevacizumab = findViewById(R.id.tilBevacizumab);
         TextView errorMessage = findViewById(R.id.errorMessage);
-        ChipGroup bevacizumabDoseGroup = findViewById(R.id.bevacizumabDoseGroup);
 
         errorMessage.setVisibility(View.GONE);
         errorMessage.setText("");
@@ -135,12 +132,7 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
             errorMessage.setVisibility(View.VISIBLE);
             return;
         }
-        boolean bevacizumabYes = "Yes".equalsIgnoreCase(bevacizumabOption.getText().toString().trim());
-        if (bevacizumabYes && bevacizumabDoseGroup.getCheckedChipId() == View.NO_ID) {
-            errorMessage.setText("Pilih dosis bevacizumab");
-            errorMessage.setVisibility(View.VISIBLE);
-            return;
-        }
+        String bevacizumabSelection = bevacizumabOption.getText().toString().trim();
 
         //menghitung IMT
         double IMT = hitungIMT(beratBadan, tinggiBadan);
@@ -207,6 +199,8 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         TextView kadarCarboplatinSevereAki = findViewById(R.id.carboplatin40);
         kadarCarboplatinSevereAki.setText((int) dosisCarboplatinSevereAki + " mg");
 
+        updateBevacizumabCard(bevacizumabSelection, beratBadan);
+
         highlightPaclitaxelCard(dosisPaclitaxel > 0);
         highlightCarboplatinCards(GFR, GFRobese);
     }
@@ -234,11 +228,7 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         aucOption.setText("6", false);
 
         AutoCompleteTextView bevacizumabOption = findViewById(R.id.bevacizumabOption);
-        bevacizumabOption.setText("No", false);
-
-        ChipGroup bevacizumabDoseGroup = findViewById(R.id.bevacizumabDoseGroup);
-        bevacizumabDoseGroup.check(R.id.chipBev75);
-        bevacizumabDoseGroup.setVisibility(View.GONE);
+        bevacizumabOption.setText("Tidak", false);
 
         TextView errorMessage = findViewById(R.id.errorMessage);
         errorMessage.setVisibility(View.GONE);
@@ -258,6 +248,14 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         TextView carboplatin40 = findViewById(R.id.carboplatin40);
         carboplatin40.setText("0");
+
+        MaterialCardView cardBevacizumab = findViewById(R.id.cardBevacizumab);
+        TextView bevacizumabSubtitle = findViewById(R.id.bevacizumabSubtitle);
+        TextView bevacizumabDose = findViewById(R.id.bevacizumabDose);
+        cardBevacizumab.setVisibility(View.GONE);
+        bevacizumabSubtitle.setText("Dosis berdasarkan BB");
+        bevacizumabDose.setText("0");
+        applyHighlight(cardBevacizumab, false);
 
         highlightPaclitaxelCard(false);
         highlightCarboplatinCards(0, 0);
@@ -280,6 +278,50 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
             return 6;
         }
         return Double.parseDouble(value);
+    }
+
+    private CharSequence buildBevacizumabOption(String dose) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(dose);
+        int unitStart = builder.length();
+        builder.append(" mg/kgBB");
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), 0);
+        return builder;
+    }
+
+    private double getCurrentBeratBadan() {
+        EditText berat = findViewById(R.id.beratBadan);
+        if (berat.getText() == null) {
+            return 0;
+        }
+
+        String value = berat.getText().toString().trim();
+        if (value.isEmpty()) {
+            return 0;
+        }
+
+        return Double.parseDouble(value);
+    }
+
+    private void updateBevacizumabCard(String selection, double beratBadan) {
+        MaterialCardView cardBevacizumab = findViewById(R.id.cardBevacizumab);
+        TextView bevacizumabSubtitle = findViewById(R.id.bevacizumabSubtitle);
+        TextView bevacizumabDose = findViewById(R.id.bevacizumabDose);
+
+        if (selection.isEmpty() || "Tidak".equalsIgnoreCase(selection)) {
+            cardBevacizumab.setVisibility(View.GONE);
+            bevacizumabSubtitle.setText("Dosis berdasarkan BB");
+            bevacizumabDose.setText("0");
+            applyHighlight(cardBevacizumab, false);
+            return;
+        }
+
+        double dosisPerKg = selection.startsWith("15") ? 15 : 7.5;
+        int totalDose = (int) Math.round(beratBadan * dosisPerKg);
+
+        cardBevacizumab.setVisibility(View.VISIBLE);
+        bevacizumabSubtitle.setText("Dosis berdasarkan BB x " + selection);
+        bevacizumabDose.setText(totalDose + " mg");
+        applyHighlight(cardBevacizumab, true);
     }
 
     static double hitungDosisMaksimumCarboplatin(double auc) {
