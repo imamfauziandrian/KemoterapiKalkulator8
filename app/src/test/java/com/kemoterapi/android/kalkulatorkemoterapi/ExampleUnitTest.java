@@ -14,4 +14,11 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void carboplatinMaxDose_isAucTimes150() {
+        assertEquals(900.0, PaclitaxelCarboplatin.hitungDosisMaksimumCarboplatin(6), 0.0);
+        assertEquals(750.0, PaclitaxelCarboplatin.hitungDosisMaksimumCarboplatin(5), 0.0);
+        assertEquals(600.0, PaclitaxelCarboplatin.hitungDosisMaksimumCarboplatin(4), 0.0);
+    }
 }

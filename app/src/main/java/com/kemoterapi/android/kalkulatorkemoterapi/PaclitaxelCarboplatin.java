@@ -1,8 +1,14 @@
 package com.kemoterapi.android.kalkulatorkemoterapi;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.StrikethroughSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -11,8 +17,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
 
@@ -146,19 +154,17 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         //Hitung GFR
         double GFR = hitungGFR(usiaPasien, beratBadan, serumKreatinin);
-        double GFRBulatFinal = pembulatanDuaDesimal(GFR);
 
         //menampilkan GFR
         TextView viewGFR = findViewById(R.id.GFR_Normal);
-        viewGFR.setText(GFRBulatFinal + " mL/min");
+        viewGFR.setText(pembulatanDuaDesimal(GFR) + " mL/min");
 
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
-        double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
         //menampilkan GFR Obese
         TextView viewGFRobese = findViewById(R.id.GFR_Obese);
-        viewGFRobese.setText(GFRObeseBulatFinal + " mL/min");
+        viewGFRobese.setText(pembulatanDuaDesimal(GFRobese) + " mL/min");
 
         //menghitung dosis Paclitaxel = LPT x 175 mg
         double dosisPaclitaxel = LPT * 175;
@@ -172,14 +178,14 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         //menampilkan kadar Carboplatin Normal
         TextView kadarCarboplatin = findViewById(R.id.carboplatin);
-        kadarCarboplatin.setText((int) dosisCarboplatin + " mg");
+        setCarboplatinDose(kadarCarboplatin, dosisCarboplatin, hitungDosisMaksimumCarboplatin(auc));
 
         //menghitung dosis Carboplatin Obese = (GFR Obese + 25) x AUC
         double dosisCarboplatinObese = (GFRobese + 25) * auc;
 
         //menampilkan kadar Carboplatin Obese
         TextView kadarCarboplatinObese = findViewById(R.id.carboplatinObese);
-        kadarCarboplatinObese.setText((int) dosisCarboplatinObese + " mg");
+        setCarboplatinDose(kadarCarboplatinObese, dosisCarboplatinObese, hitungDosisMaksimumCarboplatin(auc));
 
         //menghitung dosis Carboplatin GFR 40-60 = 250 x LPT
         double dosisCarboplatinMildAki = 250 * LPT;
@@ -194,6 +200,9 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         //menampilkan kadar Carboplatin Obese
         TextView kadarCarboplatinSevereAki = findViewById(R.id.carboplatin40);
         kadarCarboplatinSevereAki.setText((int) dosisCarboplatinSevereAki + " mg");
+
+        highlightPaclitaxelCard(dosisPaclitaxel > 0);
+        highlightCarboplatinCards(GFR, GFRobese);
     }
 
     /**
@@ -226,6 +235,24 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         TextView errorMessage = findViewById(R.id.errorMessage);
         errorMessage.setVisibility(View.GONE);
         errorMessage.setText("");
+
+        TextView paclitaxel = findViewById(R.id.paclitaxel);
+        paclitaxel.setText("0");
+
+        TextView carboplatin = findViewById(R.id.carboplatin);
+        carboplatin.setText("0");
+
+        TextView carboplatinObese = findViewById(R.id.carboplatinObese);
+        carboplatinObese.setText("0");
+
+        TextView carboplatin4060 = findViewById(R.id.carboplatin4060);
+        carboplatin4060.setText("0");
+
+        TextView carboplatin40 = findViewById(R.id.carboplatin40);
+        carboplatin40.setText("0");
+
+        highlightPaclitaxelCard(false);
+        highlightCarboplatinCards(0, 0);
     }
 
     public void klikInfoAuc(View view) {
@@ -245,6 +272,65 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
             return 6;
         }
         return Double.parseDouble(value);
+    }
+
+    static double hitungDosisMaksimumCarboplatin(double auc) {
+        return auc * 150;
+    }
+
+    private void setCarboplatinDose(TextView view, double actualDose, double maxDose) {
+        int actual = (int) Math.round(actualDose);
+        int max = (int) Math.round(maxDose);
+
+        if (actualDose > maxDose) {
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            String actualText = actual + " mg";
+            builder.append(actualText);
+            builder.setSpan(new StrikethroughSpan(), 0, actualText.length(), 0);
+            builder.setSpan(new RelativeSizeSpan(0.75f), 0, actualText.length(), 0);
+
+            builder.append("\n");
+
+            String maxText = max + " mg";
+            int start = builder.length();
+            builder.append(maxText);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), start, builder.length(), 0);
+
+            view.setText(builder);
+            return;
+        }
+
+        view.setText(actual + " mg");
+    }
+
+    private void highlightPaclitaxelCard(boolean active) {
+        MaterialCardView card = findViewById(R.id.cardPaclitaxel);
+        applyHighlight(card, active);
+    }
+
+    private void highlightCarboplatinCards(double gfr, double gfrObese) {
+        applyHighlight(findViewById(R.id.cardCarboplatinNormal), gfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatinObese), gfrObese >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin4060), gfr >= 40 && gfr < 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin40), gfr < 40);
+    }
+
+    private void applyHighlight(MaterialCardView card, boolean active) {
+        int strokeWidth = active ? dpToPx(2) : dpToPx(1);
+        int strokeColor = MaterialColors.getColor(card,
+                active ? com.google.android.material.R.attr.colorPrimary
+                        : com.google.android.material.R.attr.colorOutline);
+        int backgroundColor = MaterialColors.getColor(card,
+                active ? com.google.android.material.R.attr.colorPrimaryContainer
+                        : com.google.android.material.R.attr.colorSurfaceContainerHighest);
+
+        card.setStrokeWidth(strokeWidth);
+        card.setStrokeColor(ColorStateList.valueOf(strokeColor));
+        card.setCardBackgroundColor(backgroundColor);
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
     }
 
     //Hitung LPT
