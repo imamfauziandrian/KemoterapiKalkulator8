@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.StrikethroughSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -140,7 +143,7 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         //menampilkan IMT
         TextView viewIMT = findViewById(R.id.IndeksMassaTubuh);
-        viewIMT.setText(isiIMTbulatFinal + " kg/m2");
+        viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -148,28 +151,28 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         //menampilkan Luas Permukaan Tubuh
         TextView viewLPT = findViewById(R.id.LuasPermukaanTubuh);
-        viewLPT.setText(luasPermukaanTubuhBulatFinal + " m2");
+        viewLPT.setText(buildSquaredUnitText(luasPermukaanTubuhBulatFinal, " m2"));
 
         //Hitung GFR
         double GFR = hitungGFR(usiaPasien, beratBadan, serumKreatinin);
 
         //menampilkan GFR
         TextView viewGFR = findViewById(R.id.GFR_Normal);
-        viewGFR.setText(pembulatanDuaDesimal(GFR) + " mL/min");
+        viewGFR.setText(buildMetricText(pembulatanDuaDesimal(GFR), " mL/min"));
 
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
 
         //menampilkan GFR Obese
         TextView viewGFRobese = findViewById(R.id.GFR_Obese);
-        viewGFRobese.setText(pembulatanDuaDesimal(GFRobese) + " mL/min");
+        viewGFRobese.setText(buildMetricText(pembulatanDuaDesimal(GFRobese), " mL/min"));
 
         //menghitung dosis Paclitaxel = LPT x 175 mg
         double dosisPaclitaxel = LPT * 175;
 
         //menampilkan kadar Paclitaxel
         TextView kadarPaclitaxel = findViewById(R.id.paclitaxel);
-        kadarPaclitaxel.setText((int) dosisPaclitaxel + " mg");
+        kadarPaclitaxel.setText(buildDoseText((int) dosisPaclitaxel, "mg"));
 
         //menghitung dosis Carboplatin = (GFR + 25) x AUC
         double dosisCarboplatin = (GFR + 25) * auc;
@@ -190,14 +193,14 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         //menampilkan kadar Carboplatin Obese
         TextView kadarCarboplatinMildAki = findViewById(R.id.carboplatin4060);
-        kadarCarboplatinMildAki.setText((int) dosisCarboplatinMildAki + " mg");
+        kadarCarboplatinMildAki.setText(buildDoseText((int) dosisCarboplatinMildAki, "mg"));
 
         //menghitung dosis Carboplatin GFR 40 = 200 x LPT
         double dosisCarboplatinSevereAki = 200 * LPT;
 
         //menampilkan kadar Carboplatin Obese
         TextView kadarCarboplatinSevereAki = findViewById(R.id.carboplatin40);
-        kadarCarboplatinSevereAki.setText((int) dosisCarboplatinSevereAki + " mg");
+        kadarCarboplatinSevereAki.setText(buildDoseText((int) dosisCarboplatinSevereAki, "mg"));
 
         updateBevacizumabCard(bevacizumabSelection, beratBadan);
 
@@ -320,8 +323,38 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
         cardBevacizumab.setVisibility(View.VISIBLE);
         bevacizumabSubtitle.setText("Dosis berdasarkan BB x " + selection);
-        bevacizumabDose.setText(totalDose + " mg");
+        bevacizumabDose.setText(buildDoseText(totalDose, "mg"));
         applyHighlight(cardBevacizumab, true);
+    }
+
+    static CharSequence buildDoseText(int dose, String unit) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(String.valueOf(dose));
+        int unitStart = builder.length();
+        builder.append(" ").append(unit);
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    static CharSequence buildSquaredUnitText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        int superscriptIndex = text.lastIndexOf('2');
+        if (superscriptIndex >= 0) {
+            builder.setSpan(new SuperscriptSpan(), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new RelativeSizeSpan(0.75f), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
+    }
+
+    static CharSequence buildMetricText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
     }
 
     static double hitungDosisMaksimumCarboplatin(double auc) {
@@ -338,6 +371,7 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
             builder.append(actualText);
             builder.setSpan(new StrikethroughSpan(), 0, actualText.length(), 0);
             builder.setSpan(new RelativeSizeSpan(0.75f), 0, actualText.length(), 0);
+            applyUnitSpan(builder, actualText);
 
             builder.append("\n");
 
@@ -345,12 +379,25 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
             int start = builder.length();
             builder.append(maxText);
             builder.setSpan(new StyleSpan(Typeface.BOLD), start, builder.length(), 0);
+            applyUnitSpan(builder, maxText, start);
 
             view.setText(builder);
             return;
         }
 
-        view.setText(actual + " mg");
+        view.setText(buildDoseText(actual, "mg"));
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text) {
+        applyUnitSpan(builder, text, 0);
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text, int startOffset) {
+        int unitStart = text.indexOf(' ');
+        if (unitStart < 0) {
+            return;
+        }
+        builder.setSpan(new RelativeSizeSpan(0.72f), startOffset + unitStart, startOffset + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     private void highlightPaclitaxelCard(boolean active) {
