@@ -65,6 +65,15 @@
                 android:value="com.kemoterapi.android.kalkulatorkemoterapi.PaclitaxelCarboplatin" />
         </activity>
 
+        <activity
+            android:name="com.kemoterapi.android.kalkulatorkemoterapi.ui.info.CisplatinInfoActivity"
+            android:label="Informasi Cisplatin"
+            android:parentActivityName="com.kemoterapi.android.kalkulatorkemoterapi.Cisplatin">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.kemoterapi.android.kalkulatorkemoterapi.Cisplatin" />
+        </activity>
+
         <activity android:name="com.kemoterapi.android.kalkulatorkemoterapi.MainActivity"
             android:exported="true">
             <intent-filter>
