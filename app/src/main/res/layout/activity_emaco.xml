@@ -325,76 +325,148 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Etoposide 100 mg/m2 infus dalam 200 mL PZ dalam 30 menit"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/etoposide"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="Etoposide 100 mg/m2 infus dalam 200 mL PZ dalam 30 menit"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
 
-                            <TextView
-                                android:id="@+id/etoposide"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Dactinomycin 0,5 mg IV"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0,5 mg"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:layout_marginTop="6dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
 
-                            <TextView
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Methotrexate 100 mg/m2 IV bolus, kemudian lanjut"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/mtxIM"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Dactinomycin 0,5 mg IV"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                android:layout_marginTop="6dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0,5 mg"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Methotrexate 100 mg/m2 IV bolus, kemudian lanjut"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Methotrexate 200 mg/m2 infus dalam 12 jam"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
 
-                            <TextView
-                                android:id="@+id/mtxIM"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Methotrexate 200 mg/m2 infus dalam 12 jam"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/mtxIV"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                    <TextView
+                                        android:id="@+id/mtxIV"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -422,57 +494,111 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Etoposide 100 mg/m2 infus dalam 200 mL PZ dalam 30 menit"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/etoposideHari2"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="Etoposide 100 mg/m2 infus dalam 200 mL PZ dalam 30 menit"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
 
-                            <TextView
-                                android:id="@+id/etoposideHari2"
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Dactinomycin 0,5 mg IV"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0,5 mg"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:layout_marginTop="6dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Dactinomycin 0,5 mg IV"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0,5 mg"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Leucovorin 15 mg IM atau oral setiap 12 jam sebanyak 4x, mulai 24 jam setelah Mtx hari 1 dimulai"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Leucovorin 15 mg IM atau oral setiap 12 jam sebanyak 4x, mulai 24 jam setelah Mtx hari 1 dimulai"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="15 mg"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="15 mg"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
@@ -500,41 +626,77 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <com.google.android.material.card.MaterialCardView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Cyclophosphamide 600 mg/m2 pada PZ 100 mL, IV drip selama +/-30 menit"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
+
+                                    <TextView
+                                        android:id="@+id/cyclophosphamide"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
-                                android:text="Cyclophosphamide 600 mg/m2 pada PZ 100 mL, IV drip selama +/-30 menit"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                app:cardBackgroundColor="?attr/colorSurface"
+                                app:cardElevation="0dp"
+                                app:cardUseCompatPadding="false"
+                                app:strokeColor="?attr/colorOutlineVariant"
+                                app:strokeWidth="1dp">
 
-                            <TextView
-                                android:id="@+id/cyclophosphamide"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:paddingHorizontal="12dp"
+                                    android:paddingVertical="12dp">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="Vincristine 1 mg/m2 IV bolus"
-                                android:textColor="?attr/colorOnSurfaceVariant"
-                                android:textSize="12sp" />
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:text="Vincristine 1 mg/m2 IV bolus"
+                                        android:textColor="?attr/colorOnSurfaceVariant"
+                                        android:textSize="12sp" />
 
-                            <TextView
-                                android:id="@+id/vincristin"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:text="0"
-                                android:textColor="?attr/colorOnSurface"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                    <TextView
+                                        android:id="@+id/vincristin"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="0"
+                                        android:textColor="?attr/colorOnSurface"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
                         </LinearLayout>
                     </com.google.android.material.card.MaterialCardView>
 
