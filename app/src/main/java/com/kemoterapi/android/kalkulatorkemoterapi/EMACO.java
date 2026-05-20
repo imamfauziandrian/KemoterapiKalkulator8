@@ -2,11 +2,13 @@ package com.kemoterapi.android.kalkulatorkemoterapi;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
+import android.text.style.SuperscriptSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -62,7 +64,7 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan IMT
         TextView viewIMT = (TextView) findViewById(R.id.IndeksMassaTubuh);
-        viewIMT.setText((double) isiIMTbulatFinal + " kg/m2");
+        viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -70,7 +72,7 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan Luas Permukaan Tubuh
         TextView viewLPT = (TextView) findViewById(R.id.LuasPermukaanTubuh);
-        viewLPT.setText((double) luasPermukaanTubuhBulatFinal + " m2");
+        viewLPT.setText(buildSquaredUnitText(luasPermukaanTubuhBulatFinal, " m2"));
 
         //Hitung GFR
         double GFR = hitungGFR(usiaPasien, beratBadan, serumKreatinin);
@@ -78,7 +80,7 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan GFR
         TextView viewGFR = (TextView) findViewById(R.id.GFR_Normal);
-        viewGFR.setText((double) GFRBulatFinal + " mL/min");
+        viewGFR.setText(buildMetricText(GFRBulatFinal, " mL/min"));
 
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
@@ -86,7 +88,7 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan GFR Obese
         TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
-        viewGFRobese.setText((double) GFRObeseBulatFinal + " mL/min");
+        viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
 
 
         //menghitung dosis Etoposide = 100 mg/m2
@@ -222,6 +224,28 @@ public class EMACO extends AppCompatActivity {
         SpannableStringBuilder builder = new SpannableStringBuilder(String.valueOf(dose));
         int unitStart = builder.length();
         builder.append(" ").append(unit);
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    static CharSequence buildSquaredUnitText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        int superscriptIndex = text.lastIndexOf('2');
+        if (superscriptIndex >= 0) {
+            builder.setSpan(new SuperscriptSpan(), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new RelativeSizeSpan(0.75f), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
+    }
+
+    static CharSequence buildMetricText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
         builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }
