@@ -1,6 +1,12 @@
 package com.kemoterapi.android.kalkulatorkemoterapi;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -88,21 +94,23 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan kadar Etoposide
         TextView kadarEtoposide = (TextView) findViewById(R.id.etoposide);
-        kadarEtoposide.setText((int)dosisEtoposide + " mg");
+        setAdjustedEtoposideCyclophosphamideDose(kadarEtoposide, dosisEtoposide, GFR);
+        TextView kadarEtoposideHari2 = (TextView) findViewById(R.id.etoposideHari2);
+        setAdjustedEtoposideCyclophosphamideDose(kadarEtoposideHari2, dosisEtoposide, GFR);
 
         //menghitung dosis Mtx IM = 100 mg/m2
         double dosisMtxIM = LPT * 100;
 
         //menampilkan dosis Mtx Ld
         TextView kadarMtxIM = (TextView) findViewById(R.id.mtxIM);
-        kadarMtxIM.setText((int) dosisMtxIM + " mg");
+        setAdjustedMethotrexateDose(kadarMtxIM, dosisMtxIM, GFR);
 
         //menghitung dosis Mtx IV = 200 mg/m2
         double dosisMtxIV = LPT * 200;
 
         //menampilkan dosis Mtx IV
         TextView kadarMtxIV = (TextView) findViewById(R.id.mtxIV);
-        kadarMtxIV.setText((int) dosisMtxIV + " mg");
+        setAdjustedMethotrexateDose(kadarMtxIV, dosisMtxIV, GFR);
 
         //dosis Leucovorin fix 15 mg
         //dosis Dactinomycin fix 0,5 mg
@@ -112,7 +120,7 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan kadar Cyclophosphamide
         TextView kadarCyclophosphamide = (TextView) findViewById(R.id.cyclophosphamide);
-        kadarCyclophosphamide.setText((int) dosisCyclophophamide + " mg");
+        setAdjustedEtoposideCyclophosphamideDose(kadarCyclophosphamide, dosisCyclophophamide, GFR);
 
         //menghitung dosis Vincristine = 1 x LPT
         double dosisVincristine = luasPermukaanTubuhBulatFinal;
@@ -148,6 +156,86 @@ public class EMACO extends AppCompatActivity {
         EditText kadarSK = (EditText) findViewById(R.id.serumKreatinin);
         kadarSK.setText(null);
 
+    }
+
+    private void setAdjustedMethotrexateDose(TextView view, double dose, double gfr) {
+        setAdjustedDose(view, dose, hitungPengaliDosisMethotrexateBerdasarkanGfr(gfr));
+    }
+
+    private void setAdjustedEtoposideCyclophosphamideDose(TextView view, double dose, double gfr) {
+        setAdjustedDose(view, dose, hitungPengaliDosisEtoposideCyclophosphamideBerdasarkanGfr(gfr));
+    }
+
+    private void setAdjustedDose(TextView view, double dose, double multiplier) {
+        int originalDose = (int) dose;
+
+        if (multiplier >= 1) {
+            view.setText(buildDoseText(originalDose, "mg"));
+            return;
+        }
+
+        int adjustedDose = (int) Math.round(dose * multiplier);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        String originalText = originalDose + " mg";
+        builder.append(originalText);
+        builder.setSpan(new StrikethroughSpan(), 0, originalText.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(0.75f), 0, originalText.length(), 0);
+        applyUnitSpan(builder, originalText);
+
+        builder.append("  ");
+
+        String adjustedText = adjustedDose + " mg";
+        int adjustedStart = builder.length();
+        builder.append(adjustedText);
+        builder.setSpan(new StyleSpan(Typeface.BOLD), adjustedStart, builder.length(), 0);
+        applyUnitSpan(builder, adjustedText, adjustedStart);
+
+        view.setText(builder);
+    }
+
+    static double hitungPengaliDosisMethotrexateBerdasarkanGfr(double gfr) {
+        if (gfr >= 30 && gfr < 60) {
+            return 0.75;
+        }
+
+        if (gfr < 30) {
+            return 0.5;
+        }
+
+        return 1;
+    }
+
+    static double hitungPengaliDosisEtoposideCyclophosphamideBerdasarkanGfr(double gfr) {
+        if (gfr >= 10 && gfr < 50) {
+            return 0.75;
+        }
+
+        if (gfr < 10) {
+            return 0.5;
+        }
+
+        return 1;
+    }
+
+    private static CharSequence buildDoseText(int dose, String unit) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(String.valueOf(dose));
+        int unitStart = builder.length();
+        builder.append(" ").append(unit);
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text) {
+        applyUnitSpan(builder, text, 0);
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text, int startOffset) {
+        int unitStart = text.indexOf(' ');
+        if (unitStart < 0) {
+            return;
+        }
+        builder.setSpan(new RelativeSizeSpan(0.72f), startOffset + unitStart, startOffset + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
 
