@@ -1,13 +1,30 @@
 package com.kemoterapi.android.kalkulatorkemoterapi;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
+import android.text.style.StrikethroughSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.SuperscriptSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
-import java.lang.Math;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.textfield.TextInputLayout;
+import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
 
 public class DocetaxelCarboplatin extends AppCompatActivity {
 
@@ -25,135 +42,303 @@ public class DocetaxelCarboplatin extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.topAppBar);
         toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
 
+        AutoCompleteTextView aucOption = findViewById(R.id.aucOption);
+        ArrayAdapter<String> aucAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                new String[]{"4", "5", "6"});
+        aucOption.setAdapter(aucAdapter);
+        aucOption.setText("5", false);
     }
 
     /**
      * Fungsi tombol hitung
      */
+    public void klikHitung(View view) {
+        TextView errorMessage = findViewById(R.id.errorMessage);
 
-    public void klikHitung (View view) {
+        errorMessage.setVisibility(View.GONE);
+        errorMessage.setText("");
 
         //mengubah input usia ke variable finalUsiaPasien
-        EditText usia = (EditText) findViewById(R.id.usia);
+        EditText usia = findViewById(R.id.usia);
+        if (TextUtils.isEmpty(usia.getText())) {
+            errorMessage.setText("Usia wajib diisi");
+            errorMessage.setVisibility(View.VISIBLE);
+            return;
+        }
         int usiaPasien = Integer.parseInt(usia.getText().toString());
 
         //mengubah input berat badan ke variable finalBeratBadan
-        EditText berat = (EditText) findViewById(R.id.beratBadan);
+        EditText berat = findViewById(R.id.beratBadan);
+        if (TextUtils.isEmpty(berat.getText())) {
+            errorMessage.setText("Berat wajib diisi");
+            errorMessage.setVisibility(View.VISIBLE);
+            return;
+        }
         double beratBadan = Double.parseDouble(berat.getText().toString());
 
         //mengubah input tinggi badan ke variable finalTinggiBadan
-        EditText tinggi = (EditText) findViewById(R.id.tinggiBadan);
+        EditText tinggi = findViewById(R.id.tinggiBadan);
+        if (TextUtils.isEmpty(tinggi.getText())) {
+            errorMessage.setText("Tinggi wajib diisi");
+            errorMessage.setVisibility(View.VISIBLE);
+            return;
+        }
         double tinggiBadan = Double.parseDouble(tinggi.getText().toString());
 
         //mengubah input serum Kreatinin ke variable finalSerumKreatinin
-        EditText kadarSK = (EditText) findViewById(R.id.serumKreatinin);
+        EditText kadarSK = findViewById(R.id.serumKreatinin);
+        if (TextUtils.isEmpty(kadarSK.getText())) {
+            errorMessage.setText("Kreatinin wajib diisi");
+            errorMessage.setVisibility(View.VISIBLE);
+            return;
+        }
         double serumKreatinin = Double.parseDouble(kadarSK.getText().toString());
 
+        AutoCompleteTextView aucOption = findViewById(R.id.aucOption);
+        if (TextUtils.isEmpty(aucOption.getText())) {
+            errorMessage.setText("AUC wajib diisi");
+            errorMessage.setVisibility(View.VISIBLE);
+            return;
+        }
+        double auc = getSelectedAuc(aucOption);
 
         //menghitung IMT
         double IMT = hitungIMT(beratBadan, tinggiBadan);
         double isiIMTbulatFinal = pembulatanDuaDesimal(IMT);
 
         //menampilkan IMT
-        TextView viewIMT = (TextView) findViewById(R.id.IndeksMassaTubuh);
-        viewIMT.setText((double) isiIMTbulatFinal + " kg/m2");
+        TextView viewIMT = findViewById(R.id.IndeksMassaTubuh);
+        viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
         double luasPermukaanTubuhBulatFinal = pembulatanDuaDesimal(LPT);
 
         //menampilkan Luas Permukaan Tubuh
-        TextView viewLPT = (TextView) findViewById(R.id.LuasPermukaanTubuh);
-        viewLPT.setText((double) luasPermukaanTubuhBulatFinal + " m2");
+        TextView viewLPT = findViewById(R.id.LuasPermukaanTubuh);
+        viewLPT.setText(buildSquaredUnitText(luasPermukaanTubuhBulatFinal, " m2"));
 
         //Hitung GFR
         double GFR = hitungGFR(usiaPasien, beratBadan, serumKreatinin);
-        double GFRBulatFinal = pembulatanDuaDesimal(GFR);
 
         //menampilkan GFR
-        TextView viewGFR = (TextView) findViewById(R.id.GFR_Normal);
-        viewGFR.setText((double) GFRBulatFinal + " mL/min");
+        TextView viewGFR = findViewById(R.id.GFR_Normal);
+        viewGFR.setText(buildMetricText(pembulatanDuaDesimal(GFR), " mL/min"));
 
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
-        double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
         //menampilkan GFR Obese
-        TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
-        viewGFRobese.setText((double) GFRObeseBulatFinal + " mL/min");
-
+        TextView viewGFRobese = findViewById(R.id.GFR_Obese);
+        viewGFRobese.setText(buildMetricText(pembulatanDuaDesimal(GFRobese), " mL/min"));
 
         //menghitung dosis Docetaxel = LPT x 75 mg
         double dosisDocetaxel = LPT * 75;
 
         //menampilkan kadar Docetaxel
-        TextView kadarDocetaxel = (TextView) findViewById(R.id.docetaxel);
-        kadarDocetaxel.setText((int) dosisDocetaxel + " mg");
+        TextView kadarDocetaxel = findViewById(R.id.docetaxel);
+        kadarDocetaxel.setText(buildDoseText((int) dosisDocetaxel, "mg"));
 
-
-        //menghitung dosis Carboplatin = (GFR + 25) x 5
-        double dosisCarboplatin = (GFR + 25) * 5;
+        //menghitung dosis Carboplatin = (GFR + 25) x AUC
+        double dosisCarboplatin = (GFR + 25) * auc;
 
         //menampilkan kadar Carboplatin Normal
-        TextView kadarCarboplatin = (TextView) findViewById(R.id.carboplatin);
-        kadarCarboplatin.setText((int) dosisCarboplatin + " mg");
+        TextView kadarCarboplatin = findViewById(R.id.carboplatin);
+        setCarboplatinDose(kadarCarboplatin, dosisCarboplatin, hitungDosisMaksimumCarboplatin(auc));
 
-        //menghitung dosis Carboplatin Obese = (GFR Obese + 25) x 5
-        double dosisCarboplatinObese = (GFRobese + 25) * 5;
+        //menghitung dosis Carboplatin Obese = (GFR Obese + 25) x AUC
+        double dosisCarboplatinObese = (GFRobese + 25) * auc;
 
         //menampilkan kadar Carboplatin Obese
-        TextView kadarCarboplatinObese = (TextView) findViewById(R.id.carboplatinObese);
-        kadarCarboplatinObese.setText((int) dosisCarboplatinObese + " mg");
+        TextView kadarCarboplatinObeseView = findViewById(R.id.carboplatinObese);
+        setCarboplatinDose(kadarCarboplatinObeseView, dosisCarboplatinObese, hitungDosisMaksimumCarboplatin(auc));
 
         //menghitung dosis Carboplatin GFR 40-60 = 250 x LPT
         double dosisCarboplatinMildAki = 250 * LPT;
 
-        //menampilkan kadar Carboplatin Obese
-        TextView kadarCarboplatinMildAki = (TextView) findViewById(R.id.carboplatin4060);
-        kadarCarboplatinMildAki.setText((int) dosisCarboplatinMildAki + " mg");
+        //menampilkan kadar Carboplatin 40-60
+        TextView kadarCarboplatinMildAki = findViewById(R.id.carboplatin4060);
+        kadarCarboplatinMildAki.setText(buildDoseText((int) dosisCarboplatinMildAki, "mg"));
 
         //menghitung dosis Carboplatin GFR 40 = 200 x LPT
         double dosisCarboplatinSevereAki = 200 * LPT;
 
-        //menampilkan kadar Carboplatin Obese
-        TextView kadarCarboplatinSevereAki = (TextView) findViewById(R.id.carboplatin40);
-        kadarCarboplatinSevereAki.setText((int) dosisCarboplatinSevereAki + " mg");
+        //menampilkan kadar Carboplatin <40
+        TextView kadarCarboplatinSevereAki = findViewById(R.id.carboplatin40);
+        kadarCarboplatinSevereAki.setText(buildDoseText((int) dosisCarboplatinSevereAki, "mg"));
 
+        highlightDocetaxelCard(dosisDocetaxel > 0);
+        highlightCarboplatinCards(GFR, GFRobese);
     }
 
     /**
      * Fungsi tombol reset
      */
-
-    public void klikReset (View view) {
+    public void klikReset(View view) {
 
         PatientInputCache.clear();
 
-        //mengubah input usia ke variable finalUsiaPasien
-        EditText usia = (EditText) findViewById(R.id.usia);
+        EditText usia = findViewById(R.id.usia);
         usia.setText(null);
 
-        //mengubah input berat badan ke variable finalBeratBadan
-        EditText berat = (EditText) findViewById(R.id.beratBadan);
+        EditText berat = findViewById(R.id.beratBadan);
         berat.setText(null);
 
-        //mengubah input tinggi badan ke variable finalTinggiBadan
-        EditText tinggi = (EditText) findViewById(R.id.tinggiBadan);
+        EditText tinggi = findViewById(R.id.tinggiBadan);
         tinggi.setText(null);
 
-        //mengubah input serum Kreatinin ke variable finalSerumKreatinin
-        EditText kadarSK = (EditText) findViewById(R.id.serumKreatinin);
+        EditText kadarSK = findViewById(R.id.serumKreatinin);
         kadarSK.setText(null);
 
+        AutoCompleteTextView aucOption = findViewById(R.id.aucOption);
+        aucOption.setText("5", false);
+
+        TextView errorMessage = findViewById(R.id.errorMessage);
+        errorMessage.setVisibility(View.GONE);
+        errorMessage.setText("");
+
+        TextView docetaxel = findViewById(R.id.docetaxel);
+        docetaxel.setText("0");
+
+        TextView carboplatin = findViewById(R.id.carboplatin);
+        carboplatin.setText("0");
+
+        TextView carboplatinObese = findViewById(R.id.carboplatinObese);
+        carboplatinObese.setText("0");
+
+        TextView carboplatin4060 = findViewById(R.id.carboplatin4060);
+        carboplatin4060.setText("0");
+
+        TextView carboplatin40 = findViewById(R.id.carboplatin40);
+        carboplatin40.setText("0");
+
+        highlightDocetaxelCard(false);
+        highlightCarboplatinCards(0, 0);
     }
 
+    public void klikInfoAuc(View view) {
+        Intent intent = new Intent(this, AucInfoActivity.class);
+        startActivity(intent);
+    }
+
+    private double getSelectedAuc(AutoCompleteTextView aucOption) {
+        String value = aucOption.getText() != null ? aucOption.getText().toString().trim() : "";
+        if (value.isEmpty()) {
+            return 5;
+        }
+        return Double.parseDouble(value);
+    }
+
+    static CharSequence buildDoseText(int dose, String unit) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(String.valueOf(dose));
+        int unitStart = builder.length();
+        builder.append(" ").append(unit);
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    static CharSequence buildSquaredUnitText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        int superscriptIndex = text.lastIndexOf('2');
+        if (superscriptIndex >= 0) {
+            builder.setSpan(new SuperscriptSpan(), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new RelativeSizeSpan(0.75f), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
+    }
+
+    static CharSequence buildMetricText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    static double hitungDosisMaksimumCarboplatin(double auc) {
+        return auc * 150;
+    }
+
+    private void setCarboplatinDose(TextView view, double actualDose, double maxDose) {
+        int actual = (int) Math.round(actualDose);
+        int max = (int) Math.round(maxDose);
+
+        if (actualDose > maxDose) {
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            String actualText = actual + " mg";
+            builder.append(actualText);
+            builder.setSpan(new StrikethroughSpan(), 0, actualText.length(), 0);
+            builder.setSpan(new RelativeSizeSpan(0.75f), 0, actualText.length(), 0);
+            applyUnitSpan(builder, actualText);
+
+            builder.append("\n");
+
+            String maxText = max + " mg";
+            int start = builder.length();
+            builder.append(maxText);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), start, builder.length(), 0);
+            applyUnitSpan(builder, maxText, start);
+
+            view.setText(builder);
+            return;
+        }
+
+        view.setText(buildDoseText(actual, "mg"));
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text) {
+        applyUnitSpan(builder, text, 0);
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text, int startOffset) {
+        int unitStart = text.indexOf(' ');
+        if (unitStart < 0) {
+            return;
+        }
+        builder.setSpan(new RelativeSizeSpan(0.72f), startOffset + unitStart, startOffset + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    private void highlightDocetaxelCard(boolean active) {
+        MaterialCardView card = findViewById(R.id.cardDocetaxel);
+        applyHighlight(card, active);
+    }
+
+    private void highlightCarboplatinCards(double gfr, double gfrObese) {
+        applyHighlight(findViewById(R.id.cardCarboplatinNormal), gfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatinObese), gfrObese >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin4060), gfr >= 40 && gfr < 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin40), gfr < 40);
+    }
+
+    private void applyHighlight(MaterialCardView card, boolean active) {
+        int strokeWidth = active ? dpToPx(2) : dpToPx(1);
+        int strokeColor = MaterialColors.getColor(card,
+                active ? com.google.android.material.R.attr.colorPrimary
+                        : com.google.android.material.R.attr.colorOutline);
+        int backgroundColor = MaterialColors.getColor(card,
+                active ? com.google.android.material.R.attr.colorPrimaryContainer
+                        : com.google.android.material.R.attr.colorSurfaceContainerHighest);
+
+        card.setStrokeWidth(strokeWidth);
+        card.setStrokeColor(ColorStateList.valueOf(strokeColor));
+        card.setCardBackgroundColor(backgroundColor);
+    }
+
+    private int dpToPx(int dp) {
+        return Math.round(dp * getResources().getDisplayMetrics().density);
+    }
 
     //Hitung LPT
     //LPT = akar kuadrat dari ((BB x TB)/3600)
     static double hitungLPT(double beratBadan, double tinggiBadan) {
         double LPT = Math.sqrt((beratBadan * tinggiBadan) / 3600);
         return LPT;
-
     }
 
     //Hitung GFR
@@ -183,5 +368,4 @@ public class DocetaxelCarboplatin extends AppCompatActivity {
         double pembulatan2 = pembulatan1 / 100;
         return pembulatan2;
     }
-
 }
