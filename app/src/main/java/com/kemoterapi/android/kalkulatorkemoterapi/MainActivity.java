@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //klik ke halaman BEP
+    public void klikBEP(View view){
+        Intent intent = new Intent(this, BEP.class);
+        startActivity(intent);
+    }
+
     //klik ke halaman EMAEP
     public void klikEmaEP(View view){
         Intent intent = new Intent(this, EMAEP.class);
