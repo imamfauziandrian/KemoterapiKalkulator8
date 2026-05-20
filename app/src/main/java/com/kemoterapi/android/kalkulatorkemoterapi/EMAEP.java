@@ -1,6 +1,14 @@
 package com.kemoterapi.android.kalkulatorkemoterapi;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
+import android.text.style.SuperscriptSpan;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -55,7 +63,7 @@ public class EMAEP extends AppCompatActivity {
 
         //menampilkan IMT
         TextView viewIMT = (TextView) findViewById(R.id.IndeksMassaTubuh);
-        viewIMT.setText((double) isiIMTbulatFinal + " kg/m2");
+        viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -63,7 +71,7 @@ public class EMAEP extends AppCompatActivity {
 
         //menampilkan Luas Permukaan Tubuh
         TextView viewLPT = (TextView) findViewById(R.id.LuasPermukaanTubuh);
-        viewLPT.setText((double) luasPermukaanTubuhBulatFinal + " m2");
+        viewLPT.setText(buildSquaredUnitText(luasPermukaanTubuhBulatFinal, " m2"));
 
         //Hitung GFR
         double GFR = hitungGFR(usiaPasien, beratBadan, serumKreatinin);
@@ -71,7 +79,7 @@ public class EMAEP extends AppCompatActivity {
 
         //menampilkan GFR
         TextView viewGFR = (TextView) findViewById(R.id.GFR_Normal);
-        viewGFR.setText((double) GFRBulatFinal + " mL/min");
+        viewGFR.setText(buildMetricText(GFRBulatFinal, " mL/min"));
 
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
@@ -79,43 +87,40 @@ public class EMAEP extends AppCompatActivity {
 
         //menampilkan GFR Obese
         TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
-        viewGFRobese.setText((double) GFRObeseBulatFinal + " mL/min");
+        viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
 
-
-        //menghitung dosis Etoposide = 150 mg/m2
-        double dosisEtoposide150 = LPT * 150;
-
-        //menampilkan kadar Etoposide
-        TextView kadarEtoposide150 = (TextView) findViewById(R.id.etoposide150);
-        kadarEtoposide150.setText((int)dosisEtoposide150 + " mg");
 
         //menghitung dosis Etoposide = 100 mg/m2
         double dosisEtoposide100 = LPT * 100;
 
         //menampilkan kadar Etoposide
-        TextView kadarEtoposide100 = (TextView) findViewById(R.id.etoposide100);
-        kadarEtoposide100.setText((int)dosisEtoposide100 + " mg");
+        TextView kadarEtoposideHari1 = (TextView) findViewById(R.id.etoposideHari1);
+        setAdjustedEtoposideDose(kadarEtoposideHari1, dosisEtoposide100, GFR);
+        TextView kadarEtoposideHari2 = (TextView) findViewById(R.id.etoposideHari2);
+        setAdjustedEtoposideDose(kadarEtoposideHari2, dosisEtoposide100, GFR);
+        TextView kadarEtoposideHari8 = (TextView) findViewById(R.id.etoposideHari8);
+        setAdjustedEtoposideDose(kadarEtoposideHari8, dosisEtoposide100, GFR);
 
-        //menghitung dosis Cisplatin = 75 mg/m2
-        double dosisCisplatin75 = LPT * 75;
+        //menghitung dosis Cisplatin = 60 mg/m2
+        double dosisCisplatin60 = LPT * 60;
 
-        //menampilkan kadar Etoposide
-        TextView kadarCisplatin75 = (TextView) findViewById(R.id.cisplatin75);
-        kadarCisplatin75.setText((int)dosisCisplatin75 + " mg");
+        //menampilkan kadar Cisplatin
+        TextView kadarCisplatin60 = (TextView) findViewById(R.id.cisplatin60);
+        setAdjustedCisplatinDose(kadarCisplatin60, dosisCisplatin60, GFR);
 
         //menghitung dosis Mtx IM = 100 mg/m2
         double dosisMtxIM = LPT * 100;
 
         //menampilkan dosis Mtx Ld
         TextView kadarMtxIM = (TextView) findViewById(R.id.mtxIM);
-        kadarMtxIM.setText((int) dosisMtxIM + " mg");
+        setAdjustedMethotrexateDose(kadarMtxIM, dosisMtxIM, GFR);
 
         //menghitung dosis Mtx IV = 200 mg/m2
         double dosisMtxIV = LPT * 200;
 
         //menampilkan dosis Mtx IV
         TextView kadarMtxIV = (TextView) findViewById(R.id.mtxIV);
-        kadarMtxIV.setText((int) dosisMtxIV + " mg");
+        setAdjustedMethotrexateDose(kadarMtxIV, dosisMtxIV, GFR);
 
         //dosis Leucovorin fix 15 mg
         //dosis Dactinomycin fix 0,5 mg
@@ -147,6 +152,134 @@ public class EMAEP extends AppCompatActivity {
         EditText kadarSK = (EditText) findViewById(R.id.serumKreatinin);
         kadarSK.setText(null);
 
+    }
+
+    private void setAdjustedMethotrexateDose(TextView view, double dose, double gfr) {
+        setAdjustedDose(view, dose, hitungPengaliDosisMethotrexateBerdasarkanGfr(gfr));
+    }
+
+    private void setAdjustedEtoposideDose(TextView view, double dose, double gfr) {
+        setAdjustedDose(view, dose, hitungPengaliDosisEtoposideBerdasarkanGfr(gfr));
+    }
+
+    private void setAdjustedCisplatinDose(TextView view, double dose, double gfr) {
+        double multiplier = hitungPengaliDosisCisplatinBerdasarkanGfr(gfr);
+        if (multiplier == 0) {
+            view.setText("Ganti carboplatin");
+            return;
+        }
+
+        setAdjustedDose(view, dose, multiplier);
+    }
+
+    private void setAdjustedDose(TextView view, double dose, double multiplier) {
+        int originalDose = (int) dose;
+
+        if (multiplier >= 1) {
+            view.setText(buildDoseText(originalDose, "mg"));
+            return;
+        }
+
+        int adjustedDose = (int) Math.round(dose * multiplier);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        String originalText = originalDose + " mg";
+        builder.append(originalText);
+        builder.setSpan(new StrikethroughSpan(), 0, originalText.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(0.75f), 0, originalText.length(), 0);
+        applyUnitSpan(builder, originalText);
+
+        builder.append("  ");
+
+        String adjustedText = adjustedDose + " mg";
+        int adjustedStart = builder.length();
+        builder.append(adjustedText);
+        builder.setSpan(new StyleSpan(Typeface.BOLD), adjustedStart, builder.length(), 0);
+        applyUnitSpan(builder, adjustedText, adjustedStart);
+
+        view.setText(builder);
+    }
+
+    static double hitungPengaliDosisMethotrexateBerdasarkanGfr(double gfr) {
+        if (gfr >= 30 && gfr < 60) {
+            return 0.75;
+        }
+
+        if (gfr < 30) {
+            return 0.5;
+        }
+
+        return 1;
+    }
+
+    static double hitungPengaliDosisEtoposideBerdasarkanGfr(double gfr) {
+        if (gfr >= 10 && gfr < 50) {
+            return 0.75;
+        }
+
+        if (gfr < 10) {
+            return 0.5;
+        }
+
+        return 1;
+    }
+
+    static double hitungPengaliDosisCisplatinBerdasarkanGfr(double gfr) {
+        if (gfr >= 50 && gfr < 60) {
+            return 0.75;
+        }
+
+        if (gfr >= 40 && gfr < 50) {
+            return 0.5;
+        }
+
+        if (gfr < 40) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    private static CharSequence buildDoseText(int dose, String unit) {
+        SpannableStringBuilder builder = new SpannableStringBuilder(String.valueOf(dose));
+        int unitStart = builder.length();
+        builder.append(" ").append(unit);
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    static CharSequence buildSquaredUnitText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        int superscriptIndex = text.lastIndexOf('2');
+        if (superscriptIndex >= 0) {
+            builder.setSpan(new SuperscriptSpan(), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new RelativeSizeSpan(0.75f), superscriptIndex, superscriptIndex + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return builder;
+    }
+
+    static CharSequence buildMetricText(double value, String unitText) {
+        String text = value + unitText;
+        SpannableStringBuilder builder = new SpannableStringBuilder(text);
+        int unitStart = String.valueOf(value).length();
+        builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return builder;
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text) {
+        applyUnitSpan(builder, text, 0);
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text, int startOffset) {
+        int unitStart = text.indexOf(' ');
+        if (unitStart < 0) {
+            return;
+        }
+        builder.setSpan(new RelativeSizeSpan(0.72f), startOffset + unitStart, startOffset + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
 

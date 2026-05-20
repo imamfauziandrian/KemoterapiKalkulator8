@@ -59,4 +59,20 @@ public class ExampleUnitTest {
         assertEquals(1, spanned.getSpans(9, 10, SuperscriptSpan.class).length);
         assertTrue(spanned.getSpans(4, text.length(), RelativeSizeSpan.class).length >= 1);
     }
+
+    @Test
+    public void emaepGfrDoseMultipliers_useRegimenAdjustmentRules() {
+        assertEquals(1.0, EMAEP.hitungPengaliDosisMethotrexateBerdasarkanGfr(60), 0.0);
+        assertEquals(0.75, EMAEP.hitungPengaliDosisMethotrexateBerdasarkanGfr(59), 0.0);
+        assertEquals(0.5, EMAEP.hitungPengaliDosisMethotrexateBerdasarkanGfr(29), 0.0);
+
+        assertEquals(1.0, EMAEP.hitungPengaliDosisEtoposideBerdasarkanGfr(50), 0.0);
+        assertEquals(0.75, EMAEP.hitungPengaliDosisEtoposideBerdasarkanGfr(49), 0.0);
+        assertEquals(0.5, EMAEP.hitungPengaliDosisEtoposideBerdasarkanGfr(9), 0.0);
+
+        assertEquals(1.0, EMAEP.hitungPengaliDosisCisplatinBerdasarkanGfr(60), 0.0);
+        assertEquals(0.75, EMAEP.hitungPengaliDosisCisplatinBerdasarkanGfr(59), 0.0);
+        assertEquals(0.5, EMAEP.hitungPengaliDosisCisplatinBerdasarkanGfr(49), 0.0);
+        assertEquals(0.0, EMAEP.hitungPengaliDosisCisplatinBerdasarkanGfr(39), 0.0);
+    }
 }
