@@ -66,6 +66,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //klik ke halaman Bevacizumab
+    public void klikBevacizumab(View view){
+        Intent intent = new Intent(this, Bevacizumab.class);
+        startActivity(intent);
+    }
+
     //klik ke halaman EMAEP
     public void klikEmaEP(View view){
         Intent intent = new Intent(this, EMAEP.class);

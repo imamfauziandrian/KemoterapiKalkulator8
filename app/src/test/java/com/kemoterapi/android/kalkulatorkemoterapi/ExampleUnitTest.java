@@ -93,4 +93,10 @@ public class ExampleUnitTest {
         assertEquals(0.5, EMAEP.hitungPengaliDosisCisplatinBerdasarkanGfr(49), 0.0);
         assertEquals(0.0, EMAEP.hitungPengaliDosisCisplatinBerdasarkanGfr(39), 0.0);
     }
+
+    @Test
+    public void bevacizumabDose_usesSelectedMgPerKgDose() {
+        assertEquals(450, Bevacizumab.hitungDosisBevacizumab(60, 7.5));
+        assertEquals(900, Bevacizumab.hitungDosisBevacizumab(60, 15));
+    }
 }

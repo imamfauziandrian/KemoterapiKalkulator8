@@ -133,6 +133,16 @@
     </activity>
 
     <activity
+        android:name="com.kemoterapi.android.kalkulatorkemoterapi.Bevacizumab"
+        android:label="Bevacizumab"
+        android:parentActivityName="com.kemoterapi.android.kalkulatorkemoterapi.MainActivity">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.kemoterapi.android.kalkulatorkemoterapi.MainActivity" />
+    </activity>
+
+    <activity
         android:name="com.kemoterapi.android.kalkulatorkemoterapi.Cisplatin"
         android:label="Cisplatin"
         android:parentActivityName="com.kemoterapi.android.kalkulatorkemoterapi.MainActivity">
