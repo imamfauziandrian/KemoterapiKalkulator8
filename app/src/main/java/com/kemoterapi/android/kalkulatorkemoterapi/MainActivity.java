@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //klik ke halaman Carboplatin
+    public void klikCarboplatin(View view){
+        Intent intent = new Intent(this, Carboplatin.class);
+        startActivity(intent);
+    }
+
     //klik ke halaman EMAEP
     public void klikEmaEP(View view){
         Intent intent = new Intent(this, EMAEP.class);

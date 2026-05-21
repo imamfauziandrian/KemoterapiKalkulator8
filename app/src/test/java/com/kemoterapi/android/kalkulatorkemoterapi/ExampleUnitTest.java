@@ -41,6 +41,24 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void carboplatinDose_usesSelectedAucIncludingAucTwoAndThree() {
+        assertEquals(250.0, Carboplatin.hitungDosisCarboplatin(100, 2), 0.0);
+        assertEquals(375.0, Carboplatin.hitungDosisCarboplatin(100, 3), 0.0);
+        assertEquals(500.0, Carboplatin.hitungDosisCarboplatin(100, 4), 0.0);
+        assertEquals(625.0, Carboplatin.hitungDosisCarboplatin(100, 5), 0.0);
+        assertEquals(750.0, Carboplatin.hitungDosisCarboplatin(100, 6), 0.0);
+    }
+
+    @Test
+    public void carboplatinMaxDose_isAucTimes150IncludingAucTwoAndThree() {
+        assertEquals(300.0, Carboplatin.hitungDosisMaksimumCarboplatin(2), 0.0);
+        assertEquals(450.0, Carboplatin.hitungDosisMaksimumCarboplatin(3), 0.0);
+        assertEquals(600.0, Carboplatin.hitungDosisMaksimumCarboplatin(4), 0.0);
+        assertEquals(750.0, Carboplatin.hitungDosisMaksimumCarboplatin(5), 0.0);
+        assertEquals(900.0, Carboplatin.hitungDosisMaksimumCarboplatin(6), 0.0);
+    }
+
+    @Test
     public void methotrexateGfrDoseMultiplier_usesRenalAdjustmentRules() {
         assertEquals(1.0, Methotrexate.hitungPengaliDosisBerdasarkanGfr(60), 0.0);
         assertEquals(0.75, Methotrexate.hitungPengaliDosisBerdasarkanGfr(59), 0.0);
