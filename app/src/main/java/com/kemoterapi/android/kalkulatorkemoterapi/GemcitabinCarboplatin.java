@@ -25,6 +25,7 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.GemcitabinInfoActivity;
+import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class GemcitabinCarboplatin extends AppCompatActivity {
 
@@ -113,6 +114,9 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         //menampilkan IMT
         TextView viewIMT = findViewById(R.id.IndeksMassaTubuh);
         viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        boolean isGfrObese = IMT >= 30;
+        summaryCard.setGfrHighlight(isGfrObese);
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -221,6 +225,8 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         ((TextView) findViewById(R.id.carboplatin4060)).setText("0");
         ((TextView) findViewById(R.id.carboplatin40)).setText("0");
 
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        summaryCard.clearGfrHighlight();
         highlightGemcitabinCard(false);
         highlightCarboplatinCards(0, 0);
 

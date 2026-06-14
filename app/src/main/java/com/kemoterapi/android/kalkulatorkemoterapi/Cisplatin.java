@@ -22,6 +22,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.MaterialColors;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.CisplatinInfoActivity;
+import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class Cisplatin extends AppCompatActivity {
 
@@ -95,6 +96,9 @@ public class Cisplatin extends AppCompatActivity {
         //menampilkan IMT
         TextView viewIMT = (TextView) findViewById(R.id.IndeksMassaTubuh);
         viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        boolean isGfrObese = IMT >= 30;
+        summaryCard.setGfrHighlight(isGfrObese);
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -195,6 +199,9 @@ public class Cisplatin extends AppCompatActivity {
 
         TextView cisplatin40 = findViewById(R.id.cisplatin40);
         cisplatin40.setText("0");
+
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        summaryCard.clearGfrHighlight();
 
         updateGfrWarning(0);
         highlightCisplatinCards(0);

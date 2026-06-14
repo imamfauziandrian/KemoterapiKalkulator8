@@ -16,6 +16,7 @@ import java.lang.Math;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class EMAEP extends AppCompatActivity {
 
@@ -64,6 +65,9 @@ public class EMAEP extends AppCompatActivity {
         //menampilkan IMT
         TextView viewIMT = (TextView) findViewById(R.id.IndeksMassaTubuh);
         viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        boolean isGfrObese = IMT >= 30;
+        summaryCard.setGfrHighlight(isGfrObese);
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -151,6 +155,9 @@ public class EMAEP extends AppCompatActivity {
         //mengubah input serum Kreatinin ke variable finalSerumKreatinin
         EditText kadarSK = (EditText) findViewById(R.id.serumKreatinin);
         kadarSK.setText(null);
+
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        summaryCard.clearGfrHighlight();
 
     }
 

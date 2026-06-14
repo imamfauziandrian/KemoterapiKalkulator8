@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class BEP extends AppCompatActivity {
 
@@ -50,6 +51,9 @@ public class BEP extends AppCompatActivity {
         double imt = hitungIMT(beratBadan, tinggiBadan);
         TextView viewIMT = findViewById(R.id.IndeksMassaTubuh);
         viewIMT.setText(buildSquaredUnitText(pembulatanDuaDesimal(imt), " kg/m2"));
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        boolean isGfrObese = imt >= 30;
+        summaryCard.setGfrHighlight(isGfrObese);
 
         double lpt = hitungLPT(beratBadan, tinggiBadan);
         TextView viewLPT = findViewById(R.id.LuasPermukaanTubuh);
@@ -84,6 +88,9 @@ public class BEP extends AppCompatActivity {
 
         EditText kadarSK = findViewById(R.id.serumKreatinin);
         kadarSK.setText(null);
+
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        summaryCard.clearGfrHighlight();
     }
 
     private static CharSequence buildDoseText(int dose, String unit) {

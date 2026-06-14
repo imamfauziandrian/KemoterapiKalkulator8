@@ -25,6 +25,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
+import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class DocetaxelCarboplatin extends AppCompatActivity {
 
@@ -111,6 +112,9 @@ public class DocetaxelCarboplatin extends AppCompatActivity {
         //menampilkan IMT
         TextView viewIMT = findViewById(R.id.IndeksMassaTubuh);
         viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        boolean isGfrObese = IMT >= 30;
+        summaryCard.setGfrHighlight(isGfrObese);
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -214,6 +218,8 @@ public class DocetaxelCarboplatin extends AppCompatActivity {
         TextView carboplatin40 = findViewById(R.id.carboplatin40);
         carboplatin40.setText("0");
 
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        summaryCard.clearGfrHighlight();
         highlightDocetaxelCard(false);
         highlightCarboplatinCards(0, 0);
     }

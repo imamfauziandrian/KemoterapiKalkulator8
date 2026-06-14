@@ -25,6 +25,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
+import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class PaclitaxelCarboplatin extends AppCompatActivity {
 
@@ -144,6 +145,9 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         //menampilkan IMT
         TextView viewIMT = findViewById(R.id.IndeksMassaTubuh);
         viewIMT.setText(buildSquaredUnitText(isiIMTbulatFinal, " kg/m2"));
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        boolean isGfrObese = IMT >= 30;
+        summaryCard.setGfrHighlight(isGfrObese);
 
         //Hitung LPT
         double LPT = hitungLPT(beratBadan, tinggiBadan);
@@ -259,6 +263,9 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         bevacizumabSubtitle.setText("Dosis berdasarkan BB");
         bevacizumabDose.setText("0");
         applyHighlight(cardBevacizumab, false);
+
+        SummaryCardView summaryCard = findViewById(R.id.summaryCard);
+        summaryCard.clearGfrHighlight();
 
         highlightPaclitaxelCard(false);
         highlightCarboplatinCards(0, 0);
