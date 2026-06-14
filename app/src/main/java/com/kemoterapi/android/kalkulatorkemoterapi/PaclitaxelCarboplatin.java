@@ -168,6 +168,8 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(pembulatanDuaDesimal(GFRobese), " mL/min"));
@@ -179,8 +181,8 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         TextView kadarPaclitaxel = findViewById(R.id.paclitaxel);
         kadarPaclitaxel.setText(buildDoseText((int) dosisPaclitaxel, "mg"));
 
-        //menghitung dosis Carboplatin = (GFR + 25) x AUC
-        double dosisCarboplatin = (GFR + 25) * auc;
+        //menghitung dosis Carboplatin memakai GFR aktif berdasarkan IMT
+        double dosisCarboplatin = hitungDosisCarboplatin(GFR, GFRobese, isGfrObese, auc);
 
         //menampilkan kadar Carboplatin Normal
         TextView kadarCarboplatin = findViewById(R.id.carboplatin);
@@ -210,7 +212,7 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         updateBevacizumabCard(bevacizumabSelection, beratBadan);
 
         highlightPaclitaxelCard(dosisPaclitaxel > 0);
-        highlightCarboplatinCards(GFR, GFRobese);
+        highlightCarboplatinCards(selectedGfr, isGfrObese);
     }
 
     /**
@@ -269,7 +271,7 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         summaryCard.clearGfrHighlight();
 
         highlightPaclitaxelCard(false);
-        highlightCarboplatinCards(0, 0);
+        highlightCarboplatinCards(0, false);
     }
 
     public void klikInfoAuc(View view) {
@@ -374,6 +376,10 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         return auc * 150;
     }
 
+    static double hitungDosisCarboplatin(double gfrNormal, double gfrObese, boolean isObese, double auc) {
+        return (GfrUtils.getSelectedGfr(gfrNormal, gfrObese, isObese) + 25) * auc;
+    }
+
     private void setCarboplatinDose(TextView view, double actualDose, double maxDose) {
         int actual = (int) Math.round(actualDose);
         int max = (int) Math.round(maxDose);
@@ -418,11 +424,11 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
         applyHighlight(card, active);
     }
 
-    private void highlightCarboplatinCards(double gfr, double gfrObese) {
-        applyHighlight(findViewById(R.id.cardCarboplatinNormal), gfr >= 60);
-        applyHighlight(findViewById(R.id.cardCarboplatinObese), gfrObese >= 60);
-        applyHighlight(findViewById(R.id.cardCarboplatin4060), gfr >= 40 && gfr < 60);
-        applyHighlight(findViewById(R.id.cardCarboplatin40), gfr < 40);
+    private void highlightCarboplatinCards(double selectedGfr, boolean isGfrObese) {
+        applyHighlight(findViewById(R.id.cardCarboplatinNormal), !isGfrObese && selectedGfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatinObese), isGfrObese && selectedGfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin4060), selectedGfr >= 40 && selectedGfr < 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin40), selectedGfr > 0 && selectedGfr < 40);
     }
 
     private void applyHighlight(MaterialCardView card, boolean active) {

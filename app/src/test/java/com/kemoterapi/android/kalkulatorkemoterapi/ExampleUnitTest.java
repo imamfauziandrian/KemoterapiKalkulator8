@@ -27,6 +27,18 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void paclitaxelCarboplatinSelectedGfr_usesObeseValueOnlyWhenObese() {
+        assertEquals(82.0, GfrUtils.getSelectedGfr(60.0, 82.0, true), 0.0);
+        assertEquals(60.0, GfrUtils.getSelectedGfr(60.0, 82.0, false), 0.0);
+    }
+
+    @Test
+    public void paclitaxelCarboplatinDose_usesSelectedGfr() {
+        assertEquals(510.0, PaclitaxelCarboplatin.hitungDosisCarboplatin(60.0, 82.0, false, 6.0), 0.0);
+        assertEquals(642.0, PaclitaxelCarboplatin.hitungDosisCarboplatin(60.0, 82.0, true, 6.0), 0.0);
+    }
+
+    @Test
     public void gemcitabinCarboplatinDose_usesSelectedAuc() {
         assertEquals(500.0, GemcitabinCarboplatin.hitungDosisCarboplatin(100, 4), 0.0);
         assertEquals(625.0, GemcitabinCarboplatin.hitungDosisCarboplatin(100, 5), 0.0);

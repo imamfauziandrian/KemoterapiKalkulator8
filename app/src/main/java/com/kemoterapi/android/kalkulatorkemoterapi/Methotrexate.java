@@ -90,6 +90,8 @@ public class Methotrexate extends AppCompatActivity {
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
         double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
@@ -99,21 +101,21 @@ public class Methotrexate extends AppCompatActivity {
 
         //menampilkan dosis Mtx Ld
         TextView kadarMtxLd = (TextView) findViewById(R.id.mtxLD);
-        setAdjustedMethotrexateDose(kadarMtxLd, dosisMtxLD, GFR);
+        setAdjustedMethotrexateDose(kadarMtxLd, dosisMtxLD, selectedGfr);
 
 
         //menghitung dosis Mtx HD = 1 mg x berat badan
 
         //menampilkan dosis Mtx HD
         TextView kadarMtxHd = (TextView) findViewById(R.id.mtxHD);
-        setAdjustedMethotrexateDose(kadarMtxHd, beratBadan, GFR);
+        setAdjustedMethotrexateDose(kadarMtxHd, beratBadan, selectedGfr);
 
         //menghitung dosis Leucovorin = 0,1 x BB
         double dosisLeucovorin = beratBadan * 0.1;
 
         //menampilkan kadar Leucovorin
         TextView kadarLeucovorin = (TextView) findViewById(R.id.leucovorin);
-        setAdjustedMethotrexateDose(kadarLeucovorin, dosisLeucovorin, GFR);
+        setAdjustedMethotrexateDose(kadarLeucovorin, dosisLeucovorin, selectedGfr);
 
 
 

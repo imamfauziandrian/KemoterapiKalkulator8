@@ -120,6 +120,8 @@ public class Cisplatin extends AppCompatActivity {
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
         double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
@@ -130,24 +132,24 @@ public class Cisplatin extends AppCompatActivity {
 
         //menampilkan dosis Cisplatin 75
         TextView textDosisCisplatin75 = (TextView) findViewById(R.id.cisplatin75);
-        setAdjustedCisplatinDose(textDosisCisplatin75, dosisCisplatin75, GFR);
+        setAdjustedCisplatinDose(textDosisCisplatin75, dosisCisplatin75, selectedGfr);
 
         //menghitung dosis Ciplatin 50 mg/m2
         double dosisCisplatin50 = LPT * 50;
 
         //menampilkan dosis Cisplatin 50
         TextView textDosisCisplatin50 = (TextView) findViewById(R.id.cisplatin50);
-        setAdjustedCisplatinDose(textDosisCisplatin50, dosisCisplatin50, GFR);
+        setAdjustedCisplatinDose(textDosisCisplatin50, dosisCisplatin50, selectedGfr);
 
         //menghitung dosis Ciplatin 40 mg/m2
         double dosisCisplatin40 = LPT * 40;
 
         //menampilkan dosis Cisplatin 40
         TextView textDosisCisplatin40 = (TextView) findViewById(R.id.cisplatin40);
-        setAdjustedCisplatinDose(textDosisCisplatin40, dosisCisplatin40, GFR);
+        setAdjustedCisplatinDose(textDosisCisplatin40, dosisCisplatin40, selectedGfr);
 
-        updateGfrWarning(GFR);
-        highlightCisplatinCards(GFR);
+        updateGfrWarning(selectedGfr);
+        highlightCisplatinCards(selectedGfr);
 
     }
 

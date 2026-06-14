@@ -90,6 +90,8 @@ public class EMACO extends AppCompatActivity {
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
         double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
@@ -100,23 +102,23 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan kadar Etoposide
         TextView kadarEtoposide = (TextView) findViewById(R.id.etoposide);
-        setAdjustedEtoposideCyclophosphamideDose(kadarEtoposide, dosisEtoposide, GFR);
+        setAdjustedEtoposideCyclophosphamideDose(kadarEtoposide, dosisEtoposide, selectedGfr);
         TextView kadarEtoposideHari2 = (TextView) findViewById(R.id.etoposideHari2);
-        setAdjustedEtoposideCyclophosphamideDose(kadarEtoposideHari2, dosisEtoposide, GFR);
+        setAdjustedEtoposideCyclophosphamideDose(kadarEtoposideHari2, dosisEtoposide, selectedGfr);
 
         //menghitung dosis Mtx IM = 100 mg/m2
         double dosisMtxIM = LPT * 100;
 
         //menampilkan dosis Mtx Ld
         TextView kadarMtxIM = (TextView) findViewById(R.id.mtxIM);
-        setAdjustedMethotrexateDose(kadarMtxIM, dosisMtxIM, GFR);
+        setAdjustedMethotrexateDose(kadarMtxIM, dosisMtxIM, selectedGfr);
 
         //menghitung dosis Mtx IV = 200 mg/m2
         double dosisMtxIV = LPT * 200;
 
         //menampilkan dosis Mtx IV
         TextView kadarMtxIV = (TextView) findViewById(R.id.mtxIV);
-        setAdjustedMethotrexateDose(kadarMtxIV, dosisMtxIV, GFR);
+        setAdjustedMethotrexateDose(kadarMtxIV, dosisMtxIV, selectedGfr);
 
         //dosis Leucovorin fix 15 mg
         //dosis Dactinomycin fix 0,5 mg
@@ -126,7 +128,7 @@ public class EMACO extends AppCompatActivity {
 
         //menampilkan kadar Cyclophosphamide
         TextView kadarCyclophosphamide = (TextView) findViewById(R.id.cyclophosphamide);
-        setAdjustedEtoposideCyclophosphamideDose(kadarCyclophosphamide, dosisCyclophophamide, GFR);
+        setAdjustedEtoposideCyclophosphamideDose(kadarCyclophosphamide, dosisCyclophophamide, selectedGfr);
 
         //menghitung dosis Vincristine = 1 x LPT
         double dosisVincristine = luasPermukaanTubuhBulatFinal;

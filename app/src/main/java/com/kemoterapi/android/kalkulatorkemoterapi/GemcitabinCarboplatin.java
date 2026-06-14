@@ -138,6 +138,8 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
         double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
@@ -152,7 +154,7 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
 
 
         //menghitung dosis Carboplatin = (GFR + 25) x AUC
-        double dosisCarboplatin = hitungDosisCarboplatin(GFR, auc);
+        double dosisCarboplatin = hitungDosisCarboplatin(selectedGfr, auc);
 
         //menampilkan kadar Carboplatin Normal
         TextView kadarCarboplatin = findViewById(R.id.carboplatin);
@@ -180,7 +182,7 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         kadarCarboplatinSevereAki.setText(buildDoseText((int) dosisCarboplatinSevereAki, "mg"));
 
         highlightGemcitabinCard(dosisGemcitabin > 0);
-        highlightCarboplatinCards(GFR, GFRobese);
+        highlightCarboplatinCards(selectedGfr, isGfrObese);
 
     }
 
@@ -228,7 +230,7 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         SummaryCardView summaryCard = findViewById(R.id.summaryCard);
         summaryCard.clearGfrHighlight();
         highlightGemcitabinCard(false);
-        highlightCarboplatinCards(0, 0);
+        highlightCarboplatinCards(0, false);
 
     }
 
@@ -332,8 +334,8 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         applyHighlight(card, active);
     }
 
-    private void highlightCarboplatinCards(double gfr, double gfrObese) {
-        if (gfr <= 0 && gfrObese <= 0) {
+    private void highlightCarboplatinCards(double selectedGfr, boolean isGfrObese) {
+        if (selectedGfr <= 0) {
             applyHighlight(findViewById(R.id.cardCarboplatinNormal), false);
             applyHighlight(findViewById(R.id.cardCarboplatinObese), false);
             applyHighlight(findViewById(R.id.cardCarboplatin4060), false);
@@ -341,10 +343,10 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
             return;
         }
 
-        applyHighlight(findViewById(R.id.cardCarboplatinNormal), gfr >= 60);
-        applyHighlight(findViewById(R.id.cardCarboplatinObese), gfrObese >= 60);
-        applyHighlight(findViewById(R.id.cardCarboplatin4060), gfr >= 40 && gfr < 60);
-        applyHighlight(findViewById(R.id.cardCarboplatin40), gfr < 40);
+        applyHighlight(findViewById(R.id.cardCarboplatinNormal), !isGfrObese && selectedGfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatinObese), isGfrObese && selectedGfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin4060), selectedGfr >= 40 && selectedGfr < 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin40), selectedGfr < 40);
     }
 
     private void applyHighlight(MaterialCardView card, boolean active) {

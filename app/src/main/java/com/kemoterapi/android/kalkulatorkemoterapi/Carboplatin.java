@@ -139,12 +139,14 @@ public class Carboplatin extends AppCompatActivity {
         //Hitung GFR Obese
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(pembulatanDuaDesimal(GFRobese), " mL/min"));
 
         //menghitung dosis Carboplatin = (GFR + 25) x AUC
-        double dosisCarboplatin = hitungDosisCarboplatin(GFR, auc);
+        double dosisCarboplatin = hitungDosisCarboplatin(selectedGfr, auc);
 
         //menampilkan kadar Carboplatin Normal
         TextView kadarCarboplatin = findViewById(R.id.carboplatin);
@@ -171,7 +173,7 @@ public class Carboplatin extends AppCompatActivity {
         TextView kadarCarboplatinSevereAki = findViewById(R.id.carboplatin40);
         kadarCarboplatinSevereAki.setText(buildDoseText((int) dosisCarboplatinSevereAki, "mg"));
 
-        highlightCarboplatinCards(GFR, GFRobese);
+        highlightCarboplatinCards(selectedGfr, isGfrObese);
     }
 
     /**
@@ -214,7 +216,7 @@ public class Carboplatin extends AppCompatActivity {
 
         SummaryCardView summaryCard = findViewById(R.id.summaryCard);
         summaryCard.clearGfrHighlight();
-        highlightCarboplatinCards(0, 0);
+        highlightCarboplatinCards(0, false);
     }
 
     public void klikInfoAuc(View view) {
@@ -313,11 +315,11 @@ public class Carboplatin extends AppCompatActivity {
         builder.setSpan(new RelativeSizeSpan(0.72f), startOffset + unitStart, startOffset + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
-    private void highlightCarboplatinCards(double gfr, double gfrObese) {
-        applyHighlight(findViewById(R.id.cardCarboplatinNormal), gfr >= 60);
-        applyHighlight(findViewById(R.id.cardCarboplatinObese), gfrObese >= 60);
-        applyHighlight(findViewById(R.id.cardCarboplatin4060), gfr >= 40 && gfr < 60);
-        applyHighlight(findViewById(R.id.cardCarboplatin40), gfr < 40);
+    private void highlightCarboplatinCards(double selectedGfr, boolean isGfrObese) {
+        applyHighlight(findViewById(R.id.cardCarboplatinNormal), !isGfrObese && selectedGfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatinObese), isGfrObese && selectedGfr >= 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin4060), selectedGfr >= 40 && selectedGfr < 60);
+        applyHighlight(findViewById(R.id.cardCarboplatin40), selectedGfr > 0 && selectedGfr < 40);
     }
 
     private void applyHighlight(MaterialCardView card, boolean active) {

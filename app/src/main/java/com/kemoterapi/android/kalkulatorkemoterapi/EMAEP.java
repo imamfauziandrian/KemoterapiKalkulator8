@@ -89,6 +89,8 @@ public class EMAEP extends AppCompatActivity {
         double GFRobese = hitungGFRobese(usiaPasien, beratBadan, tinggiBadan, serumKreatinin);
         double GFRObeseBulatFinal = pembulatanDuaDesimal(GFRobese);
 
+        double selectedGfr = GfrUtils.getSelectedGfr(GFR, GFRobese, isGfrObese);
+
         //menampilkan GFR Obese
         TextView viewGFRobese = (TextView) findViewById(R.id.GFR_Obese);
         viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
@@ -99,32 +101,32 @@ public class EMAEP extends AppCompatActivity {
 
         //menampilkan kadar Etoposide
         TextView kadarEtoposideHari1 = (TextView) findViewById(R.id.etoposideHari1);
-        setAdjustedEtoposideDose(kadarEtoposideHari1, dosisEtoposide100, GFR);
+        setAdjustedEtoposideDose(kadarEtoposideHari1, dosisEtoposide100, selectedGfr);
         TextView kadarEtoposideHari2 = (TextView) findViewById(R.id.etoposideHari2);
-        setAdjustedEtoposideDose(kadarEtoposideHari2, dosisEtoposide100, GFR);
+        setAdjustedEtoposideDose(kadarEtoposideHari2, dosisEtoposide100, selectedGfr);
         TextView kadarEtoposideHari8 = (TextView) findViewById(R.id.etoposideHari8);
-        setAdjustedEtoposideDose(kadarEtoposideHari8, dosisEtoposide100, GFR);
+        setAdjustedEtoposideDose(kadarEtoposideHari8, dosisEtoposide100, selectedGfr);
 
         //menghitung dosis Cisplatin = 60 mg/m2
         double dosisCisplatin60 = LPT * 60;
 
         //menampilkan kadar Cisplatin
         TextView kadarCisplatin60 = (TextView) findViewById(R.id.cisplatin60);
-        setAdjustedCisplatinDose(kadarCisplatin60, dosisCisplatin60, GFR);
+        setAdjustedCisplatinDose(kadarCisplatin60, dosisCisplatin60, selectedGfr);
 
         //menghitung dosis Mtx IM = 100 mg/m2
         double dosisMtxIM = LPT * 100;
 
         //menampilkan dosis Mtx Ld
         TextView kadarMtxIM = (TextView) findViewById(R.id.mtxIM);
-        setAdjustedMethotrexateDose(kadarMtxIM, dosisMtxIM, GFR);
+        setAdjustedMethotrexateDose(kadarMtxIM, dosisMtxIM, selectedGfr);
 
         //menghitung dosis Mtx IV = 200 mg/m2
         double dosisMtxIV = LPT * 200;
 
         //menampilkan dosis Mtx IV
         TextView kadarMtxIV = (TextView) findViewById(R.id.mtxIV);
-        setAdjustedMethotrexateDose(kadarMtxIV, dosisMtxIV, GFR);
+        setAdjustedMethotrexateDose(kadarMtxIV, dosisMtxIV, selectedGfr);
 
         //dosis Leucovorin fix 15 mg
         //dosis Dactinomycin fix 0,5 mg
