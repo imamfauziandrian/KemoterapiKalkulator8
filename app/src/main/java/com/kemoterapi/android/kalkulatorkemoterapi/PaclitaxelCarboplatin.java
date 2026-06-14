@@ -25,6 +25,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputLayout;
 import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.AucInfoActivity;
+import com.kemoterapi.android.kalkulatorkemoterapi.ui.info.BevacizumabInfoActivity;
 import com.kemoterapi.android.kalkulatorkemoterapi.widgets.SummaryCardView;
 
 public class PaclitaxelCarboplatin extends AppCompatActivity {
@@ -273,6 +274,11 @@ public class PaclitaxelCarboplatin extends AppCompatActivity {
 
     public void klikInfoAuc(View view) {
         Intent intent = new Intent(this, AucInfoActivity.class);
+        startActivity(intent);
+    }
+
+    public void klikInfoBevacizumab(View view) {
+        Intent intent = new Intent(this, BevacizumabInfoActivity.class);
         startActivity(intent);
     }
 
