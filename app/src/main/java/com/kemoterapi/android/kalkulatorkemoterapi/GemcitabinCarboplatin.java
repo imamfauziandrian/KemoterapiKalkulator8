@@ -145,8 +145,8 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
         viewGFRobese.setText(buildMetricText(GFRObeseBulatFinal, " mL/min"));
 
 
-        //menghitung dosis Gemcitabin = LPT x 800 mg
-        double dosisGemcitabin = LPT * 800;
+        //menghitung dosis Gemcitabin = LPT x 1000 mg
+        double dosisGemcitabin = hitungDosisGemcitabin(LPT);
 
         //menampilkan kadar Gemcitabin
         TextView kadarGemcitabin = findViewById(R.id.gemcitabin);
@@ -284,6 +284,10 @@ public class GemcitabinCarboplatin extends AppCompatActivity {
 
     static double hitungDosisCarboplatin(double gfr, double auc) {
         return (gfr + 25) * auc;
+    }
+
+    static double hitungDosisGemcitabin(double lpt) {
+        return lpt * 1000;
     }
 
     static double hitungDosisMaksimumCarboplatin(double auc) {

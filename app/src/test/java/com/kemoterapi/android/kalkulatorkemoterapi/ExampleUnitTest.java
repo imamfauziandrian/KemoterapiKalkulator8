@@ -46,6 +46,12 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void gemcitabinCarboplatinGemcitabinDose_uses1000MgPerSquareMeter() {
+        assertEquals(1750.0, GemcitabinCarboplatin.hitungDosisGemcitabin(1.75), 0.0);
+        assertEquals(2100.0, GemcitabinCarboplatin.hitungDosisGemcitabin(2.1), 0.0);
+    }
+
+    @Test
     public void gemcitabinCarboplatinMaxDose_isAucTimes150() {
         assertEquals(600.0, GemcitabinCarboplatin.hitungDosisMaksimumCarboplatin(4), 0.0);
         assertEquals(750.0, GemcitabinCarboplatin.hitungDosisMaksimumCarboplatin(5), 0.0);
