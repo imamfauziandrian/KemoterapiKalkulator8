@@ -34,43 +34,123 @@
             android:padding="24dp">
 
             <TextView
-                android:id="@+id/pageTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="Note penggunaan Bevacizumab"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/pageBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:lineSpacingExtra="6dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Ca ovarium monoterapi pasca kombinasi dengan Paclitaxel Carboplatin"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="15sp" />
+                android:textSize="14sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dosis 7,5 mg/kgBB regimen¹"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Diberikan bersamaan saat kemoterapi Paclitaxel dan Carboplatin, kemudian dilanjutkan maintenance 3 minggu sekali hingga 18 kali total atau 12 kali maintenance monoterapi pasca kemoterapi kombinasi."
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:cardBackgroundColor="?attr/colorSurfaceContainerHighest"
+                app:cardElevation="0dp"
+                app:cardUseCompatPadding="false"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="14dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Dosis 15 mg/kgBB regimen²"
+                        android:textColor="?attr/colorOnSurface"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:lineSpacingExtra="4dp"
+                        android:text="Diberikan bersamaan saat kemoterapi Paclitaxel dan Carboplatin, kemudian dilanjutkan maintenance 3 minggu sekali hingga 22 kali total atau 16 kali maintenance monoterapi pasca kemoterapi kombinasi."
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="14dp"
+                android:layout_marginTop="18dp"
                 app:dividerColor="?attr/colorOutlineVariant"
                 app:dividerThickness="1dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
                 android:text="Referensi"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/pageReferences"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:lineSpacingExtra="2dp"
+                android:lineSpacingExtra="5dp"
+                android:text="1. Standard chemotherapy with or without bevacizumab for women with newly diagnosed ovarian cancer (ICON7): overall survival results of a phase 3 randomised trial. Lancet Oncol. 2015 Aug;16(8):928-36. doi: 10.1016/S1470-2045(15)00086-8. Epub 2015 Jun 23. PMID: 26115797; PMCID: PMC4648090."
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="5dp"
+                android:text="2. Final Overall Survival of a Randomized Trial of Bevacizumab for Primary Treatment of Ovarian Cancer. J Clin Oncol. 2019 Sep 10;37(26):2317-2328. doi: 10.1200/JCO.19.01009. Epub 2019 Jun 19. PMID: 31216226; PMCID: PMC6879307."
                 android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="13sp" />
         </LinearLayout>
