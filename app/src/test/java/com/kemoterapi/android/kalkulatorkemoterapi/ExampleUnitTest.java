@@ -113,6 +113,29 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void bepGfrDoseMultipliers_followRequestedRules() {
+        assertEquals(1.0, BEP.hitungPengaliDosisBleomycinBerdasarkanGfr(50), 0.0);
+        assertEquals(0.75, BEP.hitungPengaliDosisBleomycinBerdasarkanGfr(49), 0.0);
+        assertEquals(0.5, BEP.hitungPengaliDosisBleomycinBerdasarkanGfr(9), 0.0);
+
+        assertEquals(1.0, BEP.hitungPengaliDosisEtoposideBerdasarkanGfr(50), 0.0);
+        assertEquals(0.75, BEP.hitungPengaliDosisEtoposideBerdasarkanGfr(49), 0.0);
+        assertEquals(0.5, BEP.hitungPengaliDosisEtoposideBerdasarkanGfr(9), 0.0);
+
+        assertEquals(1.0, BEP.hitungPengaliDosisCisplatinBerdasarkanGfr(60), 0.0);
+        assertEquals(0.75, BEP.hitungPengaliDosisCisplatinBerdasarkanGfr(59), 0.0);
+        assertEquals(0.5, BEP.hitungPengaliDosisCisplatinBerdasarkanGfr(49), 0.0);
+        assertEquals(0.0, BEP.hitungPengaliDosisCisplatinBerdasarkanGfr(39), 0.0);
+    }
+
+    @Test
+    public void bepAdjustedDose_roundsToNearestWholeNumber() {
+        assertEquals(23, BEP.hitungDosisDisesuaikan(30, 0.75));
+        assertEquals(15, BEP.hitungDosisDisesuaikan(30, 0.5));
+        assertEquals(138, BEP.hitungDosisDisesuaikan(183.0, 0.75));
+    }
+
+    @Test
     public void bevacizumabDose_usesSelectedMgPerKgDose() {
         assertEquals(450, Bevacizumab.hitungDosisBevacizumab(60, 7.5));
         assertEquals(900, Bevacizumab.hitungDosisBevacizumab(60, 15));

@@ -1,10 +1,13 @@
 package com.kemoterapi.android.kalkulatorkemoterapi;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
 import android.text.style.SuperscriptSpan;
 import android.view.View;
 import android.widget.EditText;
@@ -67,11 +70,24 @@ public class BEP extends AppCompatActivity {
         TextView viewGFRObese = findViewById(R.id.GFR_Obese);
         viewGFRObese.setText(buildMetricText(pembulatanDuaDesimal(gfrObese), " mL/min"));
 
+        double selectedGfr = GfrUtils.getSelectedGfr(gfr, gfrObese, isGfrObese);
+
+        TextView kadarBleomycin = findViewById(R.id.bleomycin);
+        setAdjustedDose(
+                kadarBleomycin,
+                30,
+                "units",
+                hitungPengaliDosisBleomycinBerdasarkanGfr(selectedGfr));
+
         TextView kadarEtoposide = findViewById(R.id.etoposide);
-        kadarEtoposide.setText(buildDoseText((int) (lpt * 100), "mg"));
+        setAdjustedDose(
+                kadarEtoposide,
+                lpt * 100,
+                "mg",
+                hitungPengaliDosisEtoposideBerdasarkanGfr(selectedGfr));
 
         TextView kadarCisplatin = findViewById(R.id.cisplatin);
-        kadarCisplatin.setText(buildDoseText((int) (lpt * 20), "mg"));
+        setAdjustedCisplatinDose(kadarCisplatin, lpt * 20, selectedGfr);
     }
 
     public void klikReset(View view) {
@@ -89,8 +105,54 @@ public class BEP extends AppCompatActivity {
         EditText kadarSK = findViewById(R.id.serumKreatinin);
         kadarSK.setText(null);
 
+        ((TextView) findViewById(R.id.IndeksMassaTubuh)).setText("0");
+        ((TextView) findViewById(R.id.LuasPermukaanTubuh)).setText("0");
+        ((TextView) findViewById(R.id.GFR_Normal)).setText("0");
+        ((TextView) findViewById(R.id.GFR_Obese)).setText("0");
+        ((TextView) findViewById(R.id.bleomycin)).setText(buildDoseText(30, "units"));
+        ((TextView) findViewById(R.id.etoposide)).setText("0");
+        ((TextView) findViewById(R.id.cisplatin)).setText("0");
+
         SummaryCardView summaryCard = findViewById(R.id.summaryCard);
         summaryCard.clearGfrHighlight();
+    }
+
+    private void setAdjustedCisplatinDose(TextView view, double dose, double gfr) {
+        double multiplier = hitungPengaliDosisCisplatinBerdasarkanGfr(gfr);
+        if (multiplier == 0) {
+            view.setText("Ganti carboplatin");
+            return;
+        }
+
+        setAdjustedDose(view, dose, "mg", multiplier);
+    }
+
+    private void setAdjustedDose(TextView view, double dose, String unit, double multiplier) {
+        int originalDose = (int) dose;
+
+        if (multiplier >= 1) {
+            view.setText(buildDoseText(originalDose, unit));
+            return;
+        }
+
+        int adjustedDose = hitungDosisDisesuaikan(dose, multiplier);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+
+        String originalText = originalDose + " " + unit;
+        builder.append(originalText);
+        builder.setSpan(new StrikethroughSpan(), 0, originalText.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(0.75f), 0, originalText.length(), 0);
+        applyUnitSpan(builder, originalText);
+
+        builder.append("  ");
+
+        String adjustedText = adjustedDose + " " + unit;
+        int adjustedStart = builder.length();
+        builder.append(adjustedText);
+        builder.setSpan(new StyleSpan(Typeface.BOLD), adjustedStart, builder.length(), 0);
+        applyUnitSpan(builder, adjustedText, adjustedStart);
+
+        view.setText(builder);
     }
 
     private static CharSequence buildDoseText(int dose, String unit) {
@@ -99,6 +161,18 @@ public class BEP extends AppCompatActivity {
         builder.append(" ").append(unit);
         builder.setSpan(new RelativeSizeSpan(0.72f), unitStart, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text) {
+        applyUnitSpan(builder, text, 0);
+    }
+
+    private void applyUnitSpan(SpannableStringBuilder builder, String text, int startOffset) {
+        int unitStart = text.indexOf(' ');
+        if (unitStart < 0) {
+            return;
+        }
+        builder.setSpan(new RelativeSizeSpan(0.72f), startOffset + unitStart, startOffset + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     static CharSequence buildSquaredUnitText(double value, String unitText) {
@@ -137,6 +211,50 @@ public class BEP extends AppCompatActivity {
 
     static double hitungIMT(double beratBadan, double tinggiBadan) {
         return beratBadan / ((tinggiBadan / 100) * (tinggiBadan / 100));
+    }
+
+    static double hitungPengaliDosisBleomycinBerdasarkanGfr(double gfr) {
+        if (gfr >= 10 && gfr < 50) {
+            return 0.75;
+        }
+
+        if (gfr < 10) {
+            return 0.5;
+        }
+
+        return 1;
+    }
+
+    static double hitungPengaliDosisEtoposideBerdasarkanGfr(double gfr) {
+        if (gfr >= 10 && gfr < 50) {
+            return 0.75;
+        }
+
+        if (gfr < 10) {
+            return 0.5;
+        }
+
+        return 1;
+    }
+
+    static double hitungPengaliDosisCisplatinBerdasarkanGfr(double gfr) {
+        if (gfr >= 50 && gfr < 60) {
+            return 0.75;
+        }
+
+        if (gfr >= 40 && gfr < 50) {
+            return 0.5;
+        }
+
+        if (gfr < 40) {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    static int hitungDosisDisesuaikan(double dose, double multiplier) {
+        return (int) Math.round(dose * multiplier);
     }
 
     public static double pembulatanDuaDesimal(double nilai) {
