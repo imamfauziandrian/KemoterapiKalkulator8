@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace 'com.kemoterapi.android.kalkulatorkemoterapi'
-    compileSdkVersion 35
+    compileSdkVersion 36
 
     defaultConfig {
         applicationId 'com.kemoterapi.android.kalkulatorkemoterapi'
         minSdkVersion 21
-        targetSdkVersion 35
-        versionCode 9
-        versionName '1.0.0'
+        targetSdkVersion 36
+        versionCode 10
+        versionName '1.0.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
