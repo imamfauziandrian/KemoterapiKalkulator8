@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimaryContainer"
-        app:title="Kemoterapi Kalkulator"
+        app:title="@string/app_name"
         app:titleCentered="true"
         app:titleTextColor="?attr/colorOnPrimaryContainer" />
 
