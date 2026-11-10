@@ -17,6 +17,7 @@ Panduan untuk memperbarui aplikasi yang sudah ada. Referensi resmi diperiksa pad
 | Ikon untuk diunggah ke Play Console | [`../app/src/main/ic_launcher-playstore.png`](../app/src/main/ic_launcher-playstore.png) |
 | Versi yang disiapkan | `versionCode 11`, `versionName '1.0.2'`, di `app/build.gradle` |
 | Identitas aplikasi | `com.kemoterapi.android.kalkulatorkemoterapi` |
+| Catatan rilis Play Store | [`release-notes/v1.0.2-kemokulator.md`](release-notes/v1.0.2-kemokulator.md) |
 
 Ikon launcher tersedia untuk `mdpi`, `hdpi`, `xhdpi`, `xxhdpi`, dan `xxxhdpi`. Foreground adaptif berukuran 108 dp dengan simbol di tengah sepanjang maksimal 64 dp, di dalam ruang aman 66 dp. Ikon Android lama berukuran 48/72/96/144/192 px. XML foreground lama bergambar robot Android sudah dihapus. Lihat [panduan ikon adaptif Android](https://developer.android.com/develop/ui/compose/system/icon_design_adaptive).
 
@@ -98,16 +99,17 @@ Judul **Kemokulator** berada di bawah batas 30 karakter untuk nama listing. Cara
 
 1. Buka **Test and release → Testing → Internal testing → Create new release**.
 2. Unggah `.aab` bertanda tangan dari langkah 4 dan periksa hasil validasi package, versi, sertifikat, dan target API.
-3. Isi nama rilis, misalnya **1.0.2 — Kemokulator**, serta catatan rilis sesuai perubahan yang benar-benar masuk dalam bundle. Contoh untuk perubahan branding ini:
+3. Isi nama rilis, misalnya **1.0.2 — Kemokulator**, serta catatan rilis sesuai perubahan yang benar-benar masuk dalam bundle. Teks siap tempel untuk pergantian nama ini, termasuk versi singkat dan versi English, tersedia di [`release-notes/v1.0.2-kemokulator.md`](release-notes/v1.0.2-kemokulator.md).
+
+   Contoh paling ringkas:
 
    ```text
-   <id>
-   Nama aplikasi kini Kemokulator.
-   Logo dan ikon aplikasi diperbarui.
-   </id>
+   Kemoterapi Kalkulator kini menjadi Kemokulator, disertai ikon dan logo baru.
+
+   Tidak ada perubahan pada rumus maupun hasil perhitungan dosis.
    ```
 
-   Gunakan tag bahasa yang ditampilkan Console; bila editor menampilkan `id-ID`, ikuti tag tersebut. Jika bundle juga berisi perubahan lain sejak rilis Play sebelumnya, tambahkan catatannya setelah meninjau perubahan itu.
+   Kolom catatan rilis dibatasi **500 karakter per bahasa**, dihitung termasuk spasi dan baris baru. Teks di atas 140 karakter. Sebutkan nama lama persis seperti yang tampil di perangkat (**Kemoterapi Kalkulator**), agar pengguna mengenali aplikasi setelah nama dan ikonnya berubah. Gunakan tag bahasa yang ditampilkan Console; bila editor menampilkan `id-ID`, ikuti tag tersebut. Jika bundle juga berisi perubahan lain sejak rilis Play sebelumnya, tambahkan catatannya setelah meninjau perubahan itu.
 
 4. Simpan dan ikuti alur review/rollout yang ditampilkan Console. Atur daftar tester dan bagikan tautan opt-in kepada tester Anda. Pengaturan tester dijelaskan di [panduan internal testing](https://support.google.com/googleplay/android-developer/answer/9845334).
 5. Pada perangkat tester, uji update dari versi Play sebelumnya tanpa uninstall. Pastikan ikon/nama baru muncul, aplikasi dapat dibuka, dan kalkulator bekerja. Jangan memasang APK debug di atas versi Play untuk menguji jalur update karena sertifikatnya berbeda.

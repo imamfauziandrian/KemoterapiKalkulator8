@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId 'com.kemoterapi.android.kalkulatorkemoterapi'
-        minSdkVersion 21
+        minSdk 24
         targetSdkVersion 36
         versionCode 11
         versionName '1.0.2'
