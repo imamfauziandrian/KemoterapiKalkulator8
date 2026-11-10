@@ -52,7 +52,7 @@
                         android:layout_width="56dp"
                         android:layout_height="3dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="?attr/colorPrimary"
+                        android:background="?attr/colorTertiary"
                         android:alpha="0.9" />
 
                     <TextView
